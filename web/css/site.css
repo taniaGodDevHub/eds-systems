@@ -12,6 +12,23 @@ main > .container {
     padding-right: 15px;
     padding-left: 15px;
 }
+@keyframes heartbeat
+{
+    0%
+    {
+        transform: scale( 1 )
+    }
+    30%
+    {
+        transform: scale( 1.2 )
+    }
+}
+#devHeart {
+    color: #8e2828;
+}
+#devHeart::before {
+    animation: heartbeat 1s infinite;
+}
 
 .not-set {
     color: #c55;
