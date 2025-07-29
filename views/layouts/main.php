@@ -46,6 +46,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     'label' => 'Пользователи',
                     'items'=>[
                         ['label' => 'Управление пользователями', 'url' => ['/users/users/index']],
+                        ['label' => 'Профили пользователей', 'url' => ['/user-profile/index']],
                         ['label' => 'Роли и разрешения', 'url' => ['/rbac/auth-item/index']],
                         ['label' => 'Наследования', 'url' => ['/rbac/auth-item-child/index']],
                     ]
