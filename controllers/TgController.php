@@ -116,7 +116,7 @@ class TgController extends AccessController
 
         $this->telegram->sendMessage([
             'chat_id' => $this->chat_id,
-            'text' => "Вам назначен менеджер: \n
+            'text' => "Ваш менеджер: \n
     ".$newManager->managerProfile->f." ".$newManager->managerProfile->i." ".$newManager->managerProfile->o." \n
     Телефон: ".$newManager->managerProfile->tel." ".(!empty($newManager->managerProfile->sub_tel) ? " доб. ".$newManager->managerProfile->sub_tel : '')." \n
     Email: ".$newManager->managerProfile->email." \n
