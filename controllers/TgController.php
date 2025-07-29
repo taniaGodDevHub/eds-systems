@@ -23,7 +23,7 @@ class TgController extends AccessController
     }
     public function actionIndex()
     {
-        $postData = file_get_contents('php://input');
+        $postData = json_decode(file_get_contents('php://input'));
         Yii::info("Вебхук от ТG" . print_r($this->request->get(), true). print_r($postData,true), 'tg');
         return true;
     }
