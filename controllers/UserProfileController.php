@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use app\models\UserProfile;
 use app\models\UserProfileSearch;
-use yii\web\Controller;
+use app\modules\rbac\exceptions\ForbiddenHttpException;
+use Yii;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -89,10 +92,22 @@ class UserProfileController extends AccessController
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id = false, $user_id = false)
     {
-        $model = $this->findModel($id);
+        if(!$id && !$user_id){
+            throw new BadRequestHttpException("Не переданы необходимые данные");
+        }
+        if($id){
+            $model = $this->findModel($id);
+        }elseif ($user_id){
+            $model = User::find()
+                ->where(['user_id' => $user_id])
+                ->one();
+        }
 
+        if(!Yii::$app->user->can('admin') && Yii::$app->user->identity->id != $model->user_id) {
+            throw new ForbiddenHttpException("Вы можете редактировать только свой профиль.");
+        }
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
