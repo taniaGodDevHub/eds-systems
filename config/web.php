@@ -33,6 +33,10 @@ $config = [
             // send all mails to a file by default.
             'useFileTransport' => true,
         ],
+        'telegram' => [
+            'class' => 'aki\telegram\Telegram',
+            'botToken' => '8330106568:AAF9MNWZ4WQmdvkNTWBAkRERwynKImpEFkQ',
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
