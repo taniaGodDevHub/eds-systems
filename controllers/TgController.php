@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 
+use app\models\ManagerToChat;
 use app\models\User;
 use Yii;
 
@@ -64,7 +65,7 @@ class TgController extends AccessController
     {
         $managers = User::find()
             ->joinWith('role')
-            ->where(['auth_assignment.item_name' => 'manager'])
+            ->where(['auth_assignment.item_name' => 'user'])
             ->all();
 
         if(empty($managers)){
@@ -72,6 +73,23 @@ class TgController extends AccessController
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
                 'text' => "Сейчас нет ни одного менеджера в системе.",
+            ]);
+            return;
+        }
+
+        $issetManager = ManagerToChat::find()
+            ->where(['chat_id' => $this->chat_id])
+            ->with('managerProfile')
+            ->one();
+
+        if(!empty($issetManager)){
+            $this->telegram->sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => "Вам уже назначен менеджер: \n
+                    ".$issetManager->managerProfile->f." ".$issetManager->managerProfile->i." ".$issetManager->managerProfile->o." \n
+                    Телефон: ".$issetManager->managerProfile->tel." ".(!empty($issetManager->managerProfile->sub_tel) ? " доб. ".$issetManager->managerProfile->sub_tel : '')." \n
+                    Email: ".$issetManager->managerProfile->email." \n
+                    Часы работы: ".$issetManager->managerProfile->work_time
             ]);
             return;
         }
@@ -110,7 +128,7 @@ class TgController extends AccessController
     {
         $this->telegram->sendMessage([
             'chat_id' => $this->chat_id,
-            'text' => "К сожалению я не знаю такой команды. Я умею пока не много но быстро учусь. Что я могу для тебя сделать?",
+            'text' => "К сожалению я не знаю такой команды. Я умею пока не много но быстро учусь. Что я могу для вас сделать? " . $this->chat_id,
         ]);
     }
 }
