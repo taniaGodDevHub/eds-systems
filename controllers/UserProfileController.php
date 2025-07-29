@@ -100,7 +100,7 @@ class UserProfileController extends AccessController
         if($id){
             $model = $this->findModel($id);
         }elseif ($user_id){
-            $model = User::find()
+            $model = UserProfile::find()
                 ->where(['user_id' => $user_id])
                 ->one();
         }
