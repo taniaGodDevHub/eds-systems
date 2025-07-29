@@ -75,7 +75,7 @@ class TgController extends AccessController
                 'chat_id' => $this->chat_id,
                 'text' => "Сейчас нет ни одного менеджера в системе.",
             ]);
-            return;
+            exit();
         }
 
         $issetManager = ManagerToChat::find()
@@ -92,7 +92,7 @@ class TgController extends AccessController
     Email: ".$issetManager->managerProfile->email." \n
     Часы работы: ".$issetManager->managerProfile->work_time
             ]);
-            return;
+            exit();
         }
 
         //Выбираем менеджера с минимальным количеством чатов
@@ -122,9 +122,7 @@ class TgController extends AccessController
     Email: ".$newManager->managerProfile->email." \n
     Часы работы: ".$newManager->managerProfile->work_time ."\n Он уже на связи в этом чате."
         ]);
-        return;
-
-
+        exit();
     }
 
     public function connect_user()
