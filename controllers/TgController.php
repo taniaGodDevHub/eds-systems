@@ -42,6 +42,10 @@ class TgController extends AccessController
             return true;
         }
         switch ($this->command){
+            case '/start':
+
+                $this->selectManager();
+                break;
             case '/connect':
 
                 $this->connect_user($this->username, $this->chat_id);
@@ -54,6 +58,23 @@ class TgController extends AccessController
         }
 
         return true;
+    }
+
+    private function selectManager()
+    {
+        $managers = User::find()
+            ->joinWith('role')
+            ->where(['auth_assignment.item_name' => 'manager'])
+            ->all();
+
+        if(empty($managers)){
+
+            $this->telegram->sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => "Сейчас нет ни одного менеджера в системе.",
+            ]);
+            return;
+        }
     }
 
     public function connect_user()

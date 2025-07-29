@@ -147,19 +147,9 @@ class User extends ActiveRecord implements IdentityInterface
         return !empty($user) ? $user->username : 'Нет данных';
     }
 
-    public function getProfile()
-    {
-        return $this->hasOne(UserProfile::className(), ['user_id' => 'id']);
-    }
-
     public function getRole()
     {
         return $this->hasOne(AuthAssignment::className(), ['user_id' => 'id']);
-    }
-
-    public function getAddress()
-    {
-        return $this->hasMany(UserAddress::className(), ['user_id' => 'id']);
     }
 
 }
