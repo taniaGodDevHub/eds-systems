@@ -15,6 +15,7 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $role;
+    public $tg_login;
     /**
      * @inheritdoc
      */
@@ -23,19 +24,20 @@ class SignupForm extends Model
         return [
             ['username', 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Это имя пользователя уже используется'],
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Этот адрес уже используется.'],
+            ['tg_login', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Этот логин уже используется'],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
             ['role', 'required'],
             ['role', 'string', 'max' => 30],
             ['role', function ($attribute, $params, $validator) {
-                if (!in_array($this->$attribute, ['user', 'manufacturer', 'provider'])) {
+                if ($this->$attribute !== 'user') {
                     $this->addError($attribute, 'Не хорошо пытаться взламывать чужие сайты!');
                 }
             },  'skipOnEmpty' => false],
@@ -51,6 +53,8 @@ class SignupForm extends Model
     {
 
         if (!$this->validate()) {
+            Yii::$app->session->setFlash('warning', "Что-то заполнено не верно.");
+
             return null;
         }
 
@@ -59,8 +63,13 @@ class SignupForm extends Model
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
-        
-        return $user->save() ? $user : null;
+        $user->tg_login = $this->tg_login;
+
+        if(!$user->save()){
+            Yii::$app->session->setFlash('warning', "Регистрация не удалась." . print_r($user->getErrors(), true));
+            return null;
+        }
+        return $user;
     }
 
     public function attributeLabels()
@@ -69,6 +78,7 @@ class SignupForm extends Model
             'username' => 'Логин',
             'password' => 'Пароль',
             'email' => 'Email',
+            'tg_login' => 'Логин в TG без @',
         ];
     }
 

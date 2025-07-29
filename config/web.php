@@ -40,6 +40,14 @@ $config = [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info', 'error', 'warning'], // Логируем ошибки и предупреждения
+                    'categories' => ['tg'], // Все категории начиная с application
+                    'logFile' => '@runtime/logs/tg.log', // Путь к файлу журнала
+                    'maxLogFiles' => 1, // Максимальное количество файлов журнала
+                    'except' => [], // Исключаемые категории
+                ],
             ],
         ],
         'db' => $db,

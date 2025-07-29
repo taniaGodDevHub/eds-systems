@@ -50,6 +50,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                         ['label' => 'Наследования', 'url' => ['/rbac/auth-item-child/index']],
                     ]
                 ] : '',
+            Yii::$app->user->isGuest ?
+                ['label' => 'Регистрация', 'url' => ['/site/signup']]  : '',
             Yii::$app->user->isGuest
                 ? ['label' => 'Войти', 'url' => ['/site/login']]
                 : '<li class="nav-item">'

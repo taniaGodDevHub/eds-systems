@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use app\modules\users\models\UserAddress;
-use app\modules\users\models\UserProfile;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -29,6 +27,8 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => 'Статус',
             'created_at' => 'Создан',
             'updated_at' => 'Обновлён',
+            'tg_login' => 'Логин в TG',
+            'tg_id' => 'ID в TG',
         ];
     }
 
@@ -49,6 +49,10 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['tg_login'], 'string'],
+            [['tg_login'], 'unique'],
+            [['tg_id'], 'integer'],
+            [['tg_id'], 'unique'],
         ];
     }
 
