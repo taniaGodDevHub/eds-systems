@@ -5,6 +5,7 @@ namespace app\controllers;
 
 use app\models\ManagerToChat;
 use app\models\User;
+use app\models\UserProfile;
 use Yii;
 
 class TgController extends AccessController
@@ -86,13 +87,44 @@ class TgController extends AccessController
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
                 'text' => "Вам уже назначен менеджер: \n
-                    ".$issetManager->managerProfile->f." ".$issetManager->managerProfile->i." ".$issetManager->managerProfile->o." \n
-                    Телефон: ".$issetManager->managerProfile->tel." ".(!empty($issetManager->managerProfile->sub_tel) ? " доб. ".$issetManager->managerProfile->sub_tel : '')." \n
-                    Email: ".$issetManager->managerProfile->email." \n
-                    Часы работы: ".$issetManager->managerProfile->work_time
+    ".$issetManager->managerProfile->f." ".$issetManager->managerProfile->i." ".$issetManager->managerProfile->o." \n
+    Телефон: ".$issetManager->managerProfile->tel." ".(!empty($issetManager->managerProfile->sub_tel) ? " доб. ".$issetManager->managerProfile->sub_tel : '')." \n
+    Email: ".$issetManager->managerProfile->email." \n
+    Часы работы: ".$issetManager->managerProfile->work_time
             ]);
             return;
         }
+
+        //Выбираем менеджера с минимальным количеством чатов
+        $counts = [];
+
+        foreach($managers as $manager){
+            $counts[$manager->id] = ManagerToChat::find()->count();;
+        }
+
+        $minValue = min($counts);
+        $keyOfMinValue = array_keys($counts, $minValue)[0];
+
+        $newMTC = new ManagerToChat();
+        $newMTC->chat_id = $this->chat_id;
+        $newMTC->manager_id = $keyOfMinValue;
+        $newMTC->save();
+
+        $newManager = UserProfile::find()
+            ->where(['user_id' => $newMTC->manager_id])
+            ->one();
+
+        $this->telegram->sendMessage([
+            'chat_id' => $this->chat_id,
+            'text' => "Вам назначен менеджер: \n
+    ".$newManager->managerProfile->f." ".$newManager->managerProfile->i." ".$newManager->managerProfile->o." \n
+    Телефон: ".$newManager->managerProfile->tel." ".(!empty($newManager->managerProfile->sub_tel) ? " доб. ".$newManager->managerProfile->sub_tel : '')." \n
+    Email: ".$newManager->managerProfile->email." \n
+    Часы работы: ".$newManager->managerProfile->work_time ."\n Он уже на связи в этом чате."
+        ]);
+        return;
+
+
     }
 
     public function connect_user()
