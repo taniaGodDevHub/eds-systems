@@ -7,6 +7,7 @@ use Yii;
 
 class TgController extends AccessController
 {
+    public $enableCsrfValidation = false;
     public function behaviors()
     {
         return [
