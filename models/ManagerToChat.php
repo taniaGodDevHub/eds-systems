@@ -11,6 +11,7 @@ use Yii;
  * @property int $id
  * @property int $manager_id
  * @property int $chat_id
+ * @property int $client_id
  */
 class ManagerToChat extends \yii\db\ActiveRecord
 {
@@ -31,7 +32,7 @@ class ManagerToChat extends \yii\db\ActiveRecord
     {
         return [
             [['manager_id', 'chat_id'], 'required'],
-            [['manager_id', 'chat_id'], 'integer'],
+            [['manager_id', 'chat_id', 'client_id'], 'integer'],
         ];
     }
 
