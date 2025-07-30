@@ -120,7 +120,9 @@ class TgController extends AccessController
     ".$newManager->f." ".$newManager->i." ".$newManager->o." \n
     Телефон: ".$newManager->tel." ".(!empty($newManager->sub_tel) ? " доб. ".$newManager->sub_tel : '')." \n
     Email: ".$newManager->email." \n
-    Часы работы: ".$newManager->work_time ."\n Он уже на связи в этом чате."
+    Часы работы: ".$newManager->work_time ."\n 
+    
+    Он уже на связи в этом чате."
         ]);
         exit();
     }
