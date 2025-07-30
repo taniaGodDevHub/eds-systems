@@ -126,6 +126,11 @@ class TgController extends AccessController
         $this->returnOk();
     }
 
+    /**
+     * Связывает аккаунт пользователя с аккаунтом ТГ
+     * @return void
+     * @throws \yii\db\Exception
+     */
     public function connect_user()
     {
         $user = User::find()
@@ -155,6 +160,10 @@ class TgController extends AccessController
         $this->returnOk();
     }
 
+    /**
+     * Отвечает, что не знает такой команды.
+     * @return void
+     */
     public function unknown()
     {
         $this->telegram->sendMessage([
@@ -168,6 +177,6 @@ class TgController extends AccessController
     {
         header('HTTP/1.1 200 OK');
         ob_flush(); flush();
-        exit();
+        die();
     }
 }
