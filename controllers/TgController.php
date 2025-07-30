@@ -190,14 +190,14 @@ class TgController extends AccessController
                     'text' => "Сообщение не отправлено. Для отправки сообщения используйте функцию телеграм \"Ответить\""
                 ]);
             }
-            $this->telegram->sendMessage([
+            /*$this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
                 'text' => "Хук".print_r($this->telegram->input->message->reply_to_message['chat']['id'], true)
-            ]);
-            /*$this->telegram->sendMessage([
-                'chat_id' => $this->telegram->input->message->reply_to_message->chat->id,
-                'text' => $this->command
             ]);*/
+            $this->telegram->sendMessage([
+                'chat_id' => $this->telegram->input->message->reply_to_message['chat']['id'],
+                'text' => $this->command
+            ]);
 
 
 
