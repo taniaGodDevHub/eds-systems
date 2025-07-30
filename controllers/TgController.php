@@ -203,7 +203,7 @@ class TgController extends AccessController
 
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
-                'text' => "Входящее сообщение " .$this->command
+                'text' => "Входящее сообщение " .$this->telegram->input->message->reply_to_message->text
             ]);
             $firstHashPos = strpos($this->telegram->input->message->reply_to_message->text, '#');
             $secondHashPos = strrpos($this->telegram->input->message->reply_to_message->text, '#');
