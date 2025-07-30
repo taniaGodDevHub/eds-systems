@@ -54,6 +54,7 @@ class TgController extends AccessController
         $tgMessage->chat_id = $this->chat_id;
         $tgMessage->message_id = $this->telegram->input->message->message_id;
         $tgMessage->author_id = $this->telegram->input->message->from->id;
+        $tgMessage->text = $this->command;
         $tgMessage->save();
 
         switch ($this->command){

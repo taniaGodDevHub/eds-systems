@@ -11,6 +11,7 @@ use Yii;
  * @property int $author_id
  * @property int $message_id
  * @property int $chat_id
+ * @property int $text
  */
 class TgMessage extends \yii\db\ActiveRecord
 {
@@ -32,6 +33,7 @@ class TgMessage extends \yii\db\ActiveRecord
         return [
             [['author_id', 'message_id', 'chat_id'], 'required'],
             [['author_id', 'message_id', 'chat_id'], 'integer'],
+            [['text'], 'string'],
         ];
     }
 

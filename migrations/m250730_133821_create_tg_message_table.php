@@ -17,6 +17,7 @@ class m250730_133821_create_tg_message_table extends Migration
             'author_id' => $this->integer()->notNull(),
             'message_id' => $this->integer()->notNull(),
             'chat_id' => $this->integer()->notNull(),
+            'text' => $this->text(),
         ]);
     }
 
