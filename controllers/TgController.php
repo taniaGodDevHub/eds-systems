@@ -179,11 +179,14 @@ class TgController extends AccessController
      */
     public function unknown()
     {
-        $this->telegram->sendMessage([
-            'chat_id' => $this->chat_id,
-            'text' => "К сожалению я не знаю такой команды. Я умею пока не много но быстро учусь. Что я могу для вас сделать? " . $this->chat_id,
-        ]);
-        exit();
+        $issetManager = ManagerToChat::find()
+            ->where(['chat_id' => $this->chat_id])
+            ->with('managerProfile')
+            ->one();
+
+        if(empty($issetManager)){
+            $this->selectManager();
+        }
     }
 
 }
