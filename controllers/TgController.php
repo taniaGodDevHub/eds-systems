@@ -201,21 +201,20 @@ class TgController extends AccessController
                 ]);
             }
 
-            $message = TgMessage::find()
-                ->where(['text' => $this->telegram->input->message->reply_to_message['text']])
-                ->one();
+            preg_match('/#([^#]+)#/', $this->command, $matches);
+            $result = $matches[1] ?? '';
 
-            if (empty($message)){
+            if (empty($matches[1])){
 
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
-                    'text' => "Не удалось найти сообщение для ответа".print_r($this->telegram->input->message->reply_to_message['message_id'], true)
+                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента"
                 ]);
                 exit();
             }
 
             $this->telegram->sendMessage([
-                'chat_id' => $message->author_id,
+                'chat_id' => $matches[1],
                 'text' => $this->command
             ]);
 
