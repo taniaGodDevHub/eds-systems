@@ -90,7 +90,8 @@ class TgController extends AccessController
     ".$issetManager->managerProfile->f." ".$issetManager->managerProfile->i." ".$issetManager->managerProfile->o." \n
     Телефон: ".$issetManager->managerProfile->tel." ".(!empty($issetManager->managerProfile->sub_tel) ? " доб. ".$issetManager->managerProfile->sub_tel : '')." \n
     Email: ".$issetManager->managerProfile->email." \n
-    Часы работы: ".$issetManager->managerProfile->work_time
+    Часы работы: ".$issetManager->managerProfile->work_time." \n
+    Вы можете написать ему в этом чате"
             ]);
             exit();
         }
