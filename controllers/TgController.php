@@ -208,7 +208,7 @@ class TgController extends AccessController
 
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
-                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента"
+                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента" . print_r($matches, true)
                 ]);
                 exit();
             }
