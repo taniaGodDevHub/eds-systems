@@ -202,7 +202,7 @@ class TgController extends AccessController
             }
 
             $message = TgMessage::find()
-                ->where(['message_id' => $this->telegram->input->message->reply_to_message['message_id']])
+                ->where(['text' => $this->telegram->input->message->reply_to_message['text']])
                 ->one();
 
             if (empty($message)){
