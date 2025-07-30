@@ -234,7 +234,7 @@ class TgController extends AccessController
 
             $this->telegram->sendMessage([
                 'chat_id' => $issetManager->manager->tg_id,
-                'text' => $this->command. "\n {$this->chat_id}"
+                'text' => $this->command. "\nКлиент: {$this->chat_id}"
             ]);
         }
 
