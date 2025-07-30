@@ -16,6 +16,8 @@ class TgController extends AccessController
     public $chat_id = false;
     public $username = false;
     public $command = false;
+    public $clientFirstName = false;
+    public $clientLastName = false;
     public function behaviors()
     {
         return [
@@ -42,6 +44,7 @@ class TgController extends AccessController
             $this->command = $this->telegram->input->message->text;
             $this->chat_id = $this->telegram->input->message->chat->id;
             $this->username = $this->telegram->input->message->chat->username;
+            $this->clientFirstName = $this->telegram->input->message->chat->first_name;
         }else{
             return true;
         }
@@ -67,6 +70,7 @@ class TgController extends AccessController
         $managers = User::find()
             ->joinWith('role')
             ->where(['auth_assignment.item_name' => 'user'])
+            ->andWhere(['not', ['tg_id' => null]])
             ->all();
 
         if(empty($managers)){
@@ -115,6 +119,8 @@ class TgController extends AccessController
             ->where(['user_id' => $newMTC->manager_id])
             ->one();
 
+        $newManagerUser = User::findOne(['id' => $newMTC->manager_id]);
+
         $this->telegram->sendMessage([
             'chat_id' => $this->chat_id,
             'text' => "Ваш менеджер: \n
@@ -124,6 +130,11 @@ class TgController extends AccessController
     Часы работы: ".$newManager->work_time ."\n 
     
     Он уже на связи в этом чате."
+        ]);
+
+        $this->telegram->sendMessage([
+            'chat_id' => $newManagerUser->tg_id,
+            'text' => "Новый клиент: " . $this->clientFirstName
         ]);
         exit();
     }
