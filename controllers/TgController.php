@@ -113,17 +113,14 @@ class TgController extends AccessController
         $newManager = UserProfile::find()
             ->where(['user_id' => $newMTC->manager_id])
             ->one();
-        $this->telegram->sendMessage([
-            'chat_id' => $this->chat_id,
-            'text' => "Ваш менеджер: ТЕСТ",
-        ]);
+
         $this->telegram->sendMessage([
             'chat_id' => $this->chat_id,
             'text' => "Ваш менеджер: \n
-    ".$newManager->managerProfile->f." ".$newManager->managerProfile->i." ".$newManager->managerProfile->o." \n
-    Телефон: ".$newManager->managerProfile->tel." ".(!empty($newManager->managerProfile->sub_tel) ? " доб. ".$newManager->managerProfile->sub_tel : '')." \n
-    Email: ".$newManager->managerProfile->email." \n
-    Часы работы: ".$newManager->managerProfile->work_time ."\n Он уже на связи в этом чате."
+    ".$newManager->managerProfile->f." ".$newManager->i." ".$newManager->o." \n
+    Телефон: ".$newManager->tel." ".(!empty($newManager->sub_tel) ? " доб. ".$newManager->sub_tel : '')." \n
+    Email: ".$newManager->email." \n
+    Часы работы: ".$newManager->work_time ."\n Он уже на связи в этом чате."
         ]);
         exit();
     }
