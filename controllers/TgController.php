@@ -188,20 +188,21 @@ class TgController extends AccessController
             ]);
         }else{
             //Это клиент
+            $issetManager = ManagerToChat::find()
+                ->where(['chat_id' => $this->chat_id])
+                ->with('managerProfile')
+                ->one();
+
+            if(empty($issetManager)){
+                $this->selectManager();
+            }
             $this->telegram->sendMessage([
-                'chat_id' => $this->chat_id,
-                'text' => "клиент: "
+                'chat_id' => $issetManager->manager_id,
+                'text' => $this->command
             ]);
         }
 
-        $issetManager = ManagerToChat::find()
-            ->where(['chat_id' => $this->chat_id])
-            ->with('managerProfile')
-            ->one();
 
-        if(empty($issetManager)){
-            $this->selectManager();
-        }
 
 
     }
