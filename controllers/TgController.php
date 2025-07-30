@@ -190,7 +190,7 @@ class TgController extends AccessController
             //Это клиент
             $issetManager = ManagerToChat::find()
                 ->where(['chat_id' => $this->chat_id])
-                ->with('managerProfile')
+                ->with('manager')
                 ->one();
 
             if(empty($issetManager)){
@@ -198,7 +198,7 @@ class TgController extends AccessController
             }
 
             $this->telegram->sendMessage([
-                'chat_id' => $issetManager->managerProfile->tg_id,
+                'chat_id' => $issetManager->manager->tg_id,
                 'text' => $this->command. "aaa"
             ]);
         }
