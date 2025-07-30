@@ -144,7 +144,7 @@ class TgController extends AccessController
      * @return void
      * @throws \yii\db\Exception
      */
-    public function connect_user()
+    private function connect_user()
     {
         $user = User::find()
             ->where(['tg_login' => $this->username])
@@ -177,15 +177,21 @@ class TgController extends AccessController
      * Отвечает, что не знает такой команды.
      * @return void
      */
-    public function unknown()
+    private function unknown()
     {
         //Определяем роль написавшего
         if(User::find()->where(['tg_id' => $this->chat_id])->exists()){
             //Это менеджер
-            $this->telegram->sendMessage([
-                'chat_id' => $this->chat_id,
-                'text' => "менеджер"
-            ]);
+            //Если нет указание на то, что это ответ отправляем сообщение о том, что нужно именно ответить.
+            if(!$this->telegram->input->message->reply_to_message){
+
+                $this->telegram->sendMessage([
+                    'chat_id' => $this->chat_id,
+                    'text' => "Сообщение не отправлено. Для отправки сообщения используйте функцию телеграм \"Ответить\""
+                ]);
+            }
+
+
         }else{
             //Это клиент
             $issetManager = ManagerToChat::find()
@@ -199,7 +205,7 @@ class TgController extends AccessController
 
             $this->telegram->sendMessage([
                 'chat_id' => $issetManager->manager->tg_id,
-                'text' => $this->command. "aaa"
+                'text' => $this->command
             ]);
         }
 
