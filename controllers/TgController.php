@@ -75,7 +75,7 @@ class TgController extends AccessController
                 'chat_id' => $this->chat_id,
                 'text' => "Сейчас нет ни одного менеджера в системе.",
             ]);
-            $this->returnOk();
+            exit();
         }
 
         $issetManager = ManagerToChat::find()
@@ -95,7 +95,7 @@ class TgController extends AccessController
     Email: ".$issetManager->managerProfile->email." \n
     Часы работы: ".$issetManager->managerProfile->work_time
             ]);
-            $this->returnOk();
+            exit();
         }
 
         //Выбираем менеджера с минимальным количеством чатов
@@ -125,7 +125,7 @@ class TgController extends AccessController
     Email: ".$newManager->managerProfile->email." \n
     Часы работы: ".$newManager->managerProfile->work_time ."\n Он уже на связи в этом чате."
         ]);
-        $this->returnOk();
+        exit();
     }
 
     /**
@@ -144,7 +144,7 @@ class TgController extends AccessController
                 'chat_id' => $this->chat_id,
                 'text' => "Не найден пользователь с таким логином телеграм. Добавьте логин тг в настройках профиля пользователя.",
             ]);
-            $this->returnOk();
+            exit();
         }
 
         $user->tg_id = (string)$this->chat_id;
@@ -159,7 +159,7 @@ class TgController extends AccessController
             'chat_id' => $this->chat_id,
             'text' => "Всё сработало. Ваша учётная запись связана с этим чатом"
         ]);
-        $this->returnOk();
+        exit();
     }
 
     /**
@@ -172,13 +172,7 @@ class TgController extends AccessController
             'chat_id' => $this->chat_id,
             'text' => "К сожалению я не знаю такой команды. Я умею пока не много но быстро учусь. Что я могу для вас сделать? " . $this->chat_id,
         ]);
-        $this->returnOk();
+        exit();
     }
 
-    private function returnOk()
-    {
-        header('HTTP/1.1 200 OK');
-        ob_flush(); flush();
-        die();
-    }
 }
