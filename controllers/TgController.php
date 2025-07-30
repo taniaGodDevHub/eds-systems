@@ -211,13 +211,13 @@ class TgController extends AccessController
 
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
-                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента" . print_r($result, true)
+                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента: " . print_r($result, true) ." Сообщение: " .$this->command
                 ]);
                 exit();
             }
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
-                'text' => "Найден тег клиента" . print_r($result, true)
+                'text' => "Найден тег клиента" . print_r($result, true) ." Сообщение: " .$this->command
             ]);
 
             $this->telegram->sendMessage([
