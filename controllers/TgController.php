@@ -208,7 +208,7 @@ class TgController extends AccessController
 
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
-                    'text' => "Не удалось найти сообщение для ответа".print_r($this->telegram->input->message->reply_to_message['message_id'], true)
+                    'text' => "Не удалось найти сообщение для ответа".print_r($this->telegram->input->message->reply_to_message, true)
                 ]);
                 exit();
             }
