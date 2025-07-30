@@ -201,6 +201,10 @@ class TgController extends AccessController
                 ]);
             }
 
+            $this->telegram->sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => "Входящее сообщение " .$this->command
+            ]);
             $firstHashPos = strpos($this->command, '#');
             $secondHashPos = strrpos($this->command, '#');
 
