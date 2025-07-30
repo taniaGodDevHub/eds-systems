@@ -105,6 +105,12 @@ class UserProfileController extends AccessController
                 ->one();
         }
 
+        if(empty($model)){
+            $model = new UserProfile();
+            $model->user_id = Yii::$app->user->identity->id;
+            $model->save();
+        }
+
         if(!Yii::$app->user->can('admin') && Yii::$app->user->identity->id != $model->user_id) {
             throw new ForbiddenHttpException("Вы можете редактировать только свой профиль.");
         }
