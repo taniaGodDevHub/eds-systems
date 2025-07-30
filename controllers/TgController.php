@@ -201,10 +201,6 @@ class TgController extends AccessController
                 ]);
             }
 
-            $this->telegram->sendMessage([
-                'chat_id' => $this->chat_id,
-                'text' => "Входящее сообщение " .$this->telegram->input->message->reply_to_message['text']
-            ]);
             $firstHashPos = strpos($this->telegram->input->message->reply_to_message['text'], '#');
             $secondHashPos = strrpos($this->telegram->input->message->reply_to_message['text'], '#');
 
@@ -219,10 +215,6 @@ class TgController extends AccessController
                 ]);
                 exit();
             }
-            $this->telegram->sendMessage([
-                'chat_id' => $this->chat_id,
-                'text' => "Найден тег клиента" . print_r($result, true) ." Сообщение: " .$this->command
-            ]);
 
             $this->telegram->sendMessage([
                 'chat_id' => (int)$result,
