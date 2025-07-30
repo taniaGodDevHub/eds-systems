@@ -204,10 +204,14 @@ class TgController extends AccessController
                 ->where(['message_id' => $this->telegram->input->message->reply_to_message->message_id])
                 ->one();
 
-            /*$this->telegram->sendMessage([
-                'chat_id' => $this->chat_id,
-                'text' => "Хук".print_r($this->telegram->input->message->reply_to_message['chat']['id'], true)
-            ]);*/
+            if (empty($message)){
+                $this->telegram->sendMessage([
+                    'chat_id' => $this->chat_id,
+                    'text' => "Не удалось найти сообщение для ответа".print_r($message, true)
+                ]);
+                exit();
+            }
+
             $this->telegram->sendMessage([
                 'chat_id' => $message->author_id,
                 'text' => $this->command
