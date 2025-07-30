@@ -215,11 +215,15 @@ class TgController extends AccessController
                 ]);
                 exit();
             }
-
             $this->telegram->sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => "Найден тег клиента" . print_r($result, true)
+            ]);
+
+            /*$this->telegram->sendMessage([
                 'chat_id' => (int)$result,
                 'text' => $this->command
-            ]);
+            ]);*/
 
 
 
