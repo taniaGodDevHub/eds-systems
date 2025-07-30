@@ -4,6 +4,7 @@ namespace app\controllers;
 
 
 use app\models\ManagerToChat;
+use app\models\TgMessage;
 use app\models\User;
 use app\models\UserProfile;
 use Yii;
@@ -48,6 +49,13 @@ class TgController extends AccessController
         }else{
             return true;
         }
+
+        $tgMessage = new TgMessage();
+        $tgMessage->chat_id = $this->chat_id;
+        $tgMessage->message_id = $this->telegram->input->message->message_id;
+        $tgMessage->author_id = $this->telegram->input->message->from->id;
+        $tgMessage->save();
+
         switch ($this->command){
             case '/start':
 
@@ -191,12 +199,17 @@ class TgController extends AccessController
                     'text' => "Сообщение не отправлено. Для отправки сообщения используйте функцию телеграм \"Ответить\""
                 ]);
             }
+
+            $message = TgMessage::find()
+                ->where(['message_id' => $this->telegram->input->message->reply_to_message->message_id])
+                ->one();
+
             /*$this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
                 'text' => "Хук".print_r($this->telegram->input->message->reply_to_message['chat']['id'], true)
             ]);*/
             $this->telegram->sendMessage([
-                'chat_id' => $this->telegram->input->message->reply_to_message['from']['id'],
+                'chat_id' => $message->author_id,
                 'text' => $this->command
             ]);
 
