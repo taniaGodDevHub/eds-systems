@@ -205,11 +205,11 @@ class TgController extends AccessController
                 'chat_id' => $this->chat_id,
                 'text' => "Входящее сообщение " .$this->command
             ]);
-            $firstHashPos = strpos($this->command, '#');
-            $secondHashPos = strrpos($this->command, '#');
+            $firstHashPos = strpos($this->telegram->input->message->reply_to_message->text, '#');
+            $secondHashPos = strrpos($this->telegram->input->message->reply_to_message->text, '#');
 
 // Извлекаем подстроку между первой и последней решеткой
-            $result = substr($this->command, $firstHashPos + 1, $secondHashPos - $firstHashPos - 1);
+            $result = substr($this->telegram->input->message->reply_to_message->text, $firstHashPos + 1, $secondHashPos - $firstHashPos - 1);
 
             if (empty($result)){
 
