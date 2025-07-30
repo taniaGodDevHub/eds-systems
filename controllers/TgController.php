@@ -113,6 +113,7 @@ class TgController extends AccessController
         $newMTC = new ManagerToChat();
         $newMTC->chat_id = $this->chat_id;
         $newMTC->manager_id = $keyOfMinValue;
+        $newMTC->client_id = $this->chat_id;
         $newMTC->save();
 
         $newManager = UserProfile::find()
@@ -179,7 +180,7 @@ class TgController extends AccessController
      */
     private function unknown()
     {
-        /*//Определяем роль написавшего
+        //Определяем роль написавшего
         if(User::find()->where(['tg_id' => $this->chat_id])->exists()){
             //Это менеджер
             //Если нет указание на то, что это ответ отправляем сообщение о том, что нужно именно ответить.
@@ -190,7 +191,10 @@ class TgController extends AccessController
                     'text' => "Сообщение не отправлено. Для отправки сообщения используйте функцию телеграм \"Ответить\""
                 ]);
             }
-
+            /*$this->telegram->sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => "Хук".print_r($this->telegram->input->message->reply_to_message['chat']['id'], true)
+            ]);*/
             $this->telegram->sendMessage([
                 'chat_id' => $this->telegram->input->message->reply_to_message['chat']['id'],
                 'text' => $this->command
@@ -213,46 +217,8 @@ class TgController extends AccessController
                 'chat_id' => $issetManager->manager->tg_id,
                 'text' => $this->command
             ]);
-        }*/
-// Определяем роль написавшего
-        if (User::find()->where(['tg_id' => $this->chat_id])->exists()) {
-            // Это менеджер
-            if (!$this->telegram->input->message->reply_to_message) {
-                // Если нет указания на то, что это ответ
-                $this->telegram->sendMessage([
-                    'chat_id' => $this->chat_id,
-                    'text' => "Сообщение не отправлено. Для отправки сообщения используйте функцию телеграм \"Ответить\""
-                ]);
-            } else {
-                // Получаем исходное сообщение клиента
-                $originalMessage = $this->telegram->input->message->reply_to_message;
-
-                // Восстанавливаем ID клиента по оригинальному сообщению
-                $clientChatId = $originalMessage['from']['id'];
-
-                // Отправляем ответ клиенту
-                $this->telegram->sendMessage([
-                    'chat_id' => $clientChatId,
-                    'text' => $this->command
-                ]);
-            }
-        } else {
-            // Это клиент
-            $issetManager = ManagerToChat::find()
-                ->where(['chat_id' => $this->chat_id])
-                ->with('manager')
-                ->one();
-
-            if (empty($issetManager)) {
-                $this->selectManager();
-            }
-
-            // Отправляем сообщение менеджеру
-            $this->telegram->sendMessage([
-                'chat_id' => $issetManager->manager->tg_id,
-                'text' => $this->command
-            ]);
         }
+
 
 
 
