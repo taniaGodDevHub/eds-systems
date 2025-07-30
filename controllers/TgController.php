@@ -201,10 +201,11 @@ class TgController extends AccessController
             }
 
             $message = TgMessage::find()
-                ->where(['message_id' => $this->telegram->input->message->reply_to_message->message_id])
+                ->where(['message_id' => $this->telegram->input->message->reply_to_message['message_id']])
                 ->one();
 
             if (empty($message)){
+
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
                     'text' => "Не удалось найти сообщение для ответа".print_r($message, true)
