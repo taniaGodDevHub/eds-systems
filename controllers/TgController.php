@@ -191,6 +191,10 @@ class TgController extends AccessController
                 ]);
             }
             $this->telegram->sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => "ID чата".$this->telegram->input->message->reply_to_message->chat->id
+            ]);
+            $this->telegram->sendMessage([
                 'chat_id' => $this->telegram->input->message->reply_to_message->chat->id,
                 'text' => $this->command
             ]);
