@@ -179,6 +179,21 @@ class TgController extends AccessController
      */
     public function unknown()
     {
+        //Определяем роль написавшего
+        if(User::find()->where(['tg_id' => $this->chat_id])->exists()){
+            //Это менеджер
+            $this->telegram->sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => "менеджер"
+            ]);
+        }else{
+            //Это клиент
+            $this->telegram->sendMessage([
+                'chat_id' => $this->chat_id,
+                'text' => "клиент: "
+            ]);
+        }
+
         $issetManager = ManagerToChat::find()
             ->where(['chat_id' => $this->chat_id])
             ->with('managerProfile')
@@ -187,6 +202,8 @@ class TgController extends AccessController
         if(empty($issetManager)){
             $this->selectManager();
         }
+
+
     }
 
 }
