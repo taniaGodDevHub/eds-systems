@@ -41,7 +41,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Главная', 'url' => ['/site/index']],
-            ['label' => 'Профиль', 'url' => ['/user-profile/update', 'user_id' => Yii::$app->user->identity->id]],
+            !Yii::$app->user->isGuest ?
+            ['label' => 'Профиль', 'url' => ['/user-profile/update', 'user_id' => Yii::$app->user->identity->id]]: '',
             Yii::$app->user->can('admin') ?
                 [
                     'label' => 'Пользователи',
