@@ -201,20 +201,23 @@ class TgController extends AccessController
                 ]);
             }
 
-            preg_match('/#([^#]+)#/', $this->command, $matches);
-            $result = $matches[1] ?? '';
+            $firstHashPos = strpos($this->command, '#');
+            $secondHashPos = strrpos($this->command, '#');
 
-            if (empty($matches[1])){
+// Извлекаем подстроку между первой и последней решеткой
+            $result = substr($this->command, $firstHashPos + 1, $secondHashPos - $firstHashPos - 1);
+
+            if (empty($result)){
 
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
-                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента" . print_r($matches, true)
+                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента" . print_r($result, true)
                 ]);
                 exit();
             }
 
             $this->telegram->sendMessage([
-                'chat_id' => $matches[1],
+                'chat_id' => (int)$result,
                 'text' => $this->command
             ]);
 
