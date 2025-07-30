@@ -199,6 +199,7 @@ class TgController extends AccessController
                     'chat_id' => $this->chat_id,
                     'text' => "Сообщение не отправлено. Для отправки сообщения используйте функцию телеграм \"Ответить\""
                 ]);
+                exit();
             }
 
             $firstHashPos = strpos($this->telegram->input->message->reply_to_message['text'], '#');
