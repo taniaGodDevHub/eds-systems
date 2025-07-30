@@ -82,7 +82,10 @@ class TgController extends AccessController
             ->where(['chat_id' => $this->chat_id])
             ->with('managerProfile')
             ->one();
-
+        $this->telegram->sendMessage([
+            'chat_id' => $this->chat_id,
+            'text' => "Найденый менеджер" . print_r($issetManager, true)
+        ]);
         if(!empty($issetManager)){
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
