@@ -116,12 +116,21 @@ class TgController extends AccessController
             $counts[$manager->id] = ManagerToChat::find()->count();;
         }
 
-        $minValue = min($counts);
-        $keyOfMinValue = array_keys($counts, $minValue)[0];
+        $min = null;
+        $min_id = null;
+        foreach ($counts as $id => $count){
+
+            if($count < $min || $min === null)
+            {
+                $min = $count;
+                $min_key = $id;
+            }
+        }
+
 
         $newMTC = new ManagerToChat();
         $newMTC->chat_id = $this->chat_id;
-        $newMTC->manager_id = $keyOfMinValue;
+        $newMTC->manager_id = $min_key;
         $newMTC->client_id = $this->chat_id;
         $newMTC->save();
 
