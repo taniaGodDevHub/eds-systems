@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 
+use app\models\Client;
 use app\models\ManagerToChat;
 use app\models\TgMessage;
 use app\models\User;
@@ -137,6 +138,15 @@ class TgController extends AccessController
         $newMTC->manager_id = $min_key;
         $newMTC->client_id = $this->chat_id;
         $newMTC->save();
+
+        if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
+            $client = new Client();
+            $client->chat_id = $newMTC->chat_id;
+            $client->i = $this->username;
+            $client->date_add = time();
+            $client->save();
+        }
+
 
         $newManager = UserProfile::find()
             ->where(['user_id' => $newMTC->manager_id])
