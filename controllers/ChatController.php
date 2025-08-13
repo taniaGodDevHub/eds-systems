@@ -113,9 +113,16 @@ class ChatController extends AccessController
         $msg->message = $this->request->post('message');
         $msg->author_id = Yii::$app->user->identity->id;
         $msg->date_add = time();
+        $msg->date_send = time();
         if(!$msg->save()){
             throw new ServerErrorHttpException("Failed to save message" . print_r($msg->getErrors(), true));
         }
+
+        $telegram = Yii::$app->telegram;
+        $telegram->sendMessage([
+            'chat_id' => $msg->chat_id,
+            'text' => $this->request->post('message')
+        ]);
 
         return $this->asJson(true);
     }
