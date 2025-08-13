@@ -101,7 +101,7 @@ $hasNew = false;
                         </div>
                     </div>
                     <div class="row" style="height: calc(100% - 100px);">
-                        <div id="message_list" class="col-12 h-100 overflow-y-auto">
+                        <div id="message_list" class="col-12 h-100" style="overflow-y: auto;">
                             <div class="row justify-content-center mt-5">
                                 <div class="col-6">
                                     <div class="spinner-grow text-info spinner-grow-sm" role="status">
