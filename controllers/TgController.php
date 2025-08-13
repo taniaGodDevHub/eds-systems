@@ -35,7 +35,11 @@ class TgController extends AccessController
     public function actionIndex()
     {
         header('HTTP/1.1 200 OK');
-        ob_flush(); flush();
+        if(ob_get_level()) {
+            ob_flush();
+            flush();
+        }
+
         $this->telegram = Yii::$app->telegram;
 
         $postData = json_decode(file_get_contents('php://input'));
