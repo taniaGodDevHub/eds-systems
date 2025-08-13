@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 
+use app\models\ChatMessage;
 use app\models\Client;
 use app\models\ManagerToChat;
 use app\models\TgMessage;
@@ -156,21 +157,40 @@ class TgController extends AccessController
 
         $newManagerUser = User::findOne(['id' => $newMTC->manager_id]);
 
-        $this->telegram->sendMessage([
-            'chat_id' => $this->chat_id,
-            'text' => "Ваш менеджер: \n
-    ".$newManager->f." ".$newManager->i." ".$newManager->o." \n
-    Телефон: ".$newManager->tel." ".(!empty($newManager->sub_tel) ? " доб. ".$newManager->sub_tel : '')." \n
-    Email: ".$newManager->email." \n
-    Часы работы: ".$newManager->work_time ."\n 
-    
-    Он уже на связи в этом чате."
-        ]);
+        $msg = "Ваш менеджер: \n
+".$newManager->f." ".$newManager->i." ".$newManager->o." \n
+Телефон: ".$newManager->tel." ".(!empty($newManager->sub_tel) ? " доб. ".$newManager->sub_tel : '')." \n
+Email: ".$newManager->email." \n
+Часы работы: ".$newManager->work_time ."\n 
+
+Он уже на связи в этом чате.";
 
         $this->telegram->sendMessage([
-            'chat_id' => $newManagerUser->tg_id,
-            'text' => "Новый клиент: " . $this->clientFirstName
+            'chat_id' => $this->chat_id,
+            'text' => $msg
         ]);
+
+        $localMsg = new ChatMessage();
+        $localMsg->chat_id = $this->chat_id;
+        $localMsg->message = $msg;
+        $localMsg->author_id = $newManager->user_id;
+        $localMsg->date_add = time();
+        $localMsg->date_send = time();
+        $localMsg->save();
+
+        $msg = "Новый клиент: " . $this->clientFirstName;
+        $this->telegram->sendMessage([
+            'chat_id' => $newManagerUser->tg_id,
+            'text' => $msg
+        ]);
+
+        $localMsg = new ChatMessage();
+        $localMsg->chat_id = $this->chat_id;
+        $localMsg->message = $msg;
+        $localMsg->date_add = time();
+        $localMsg->save();
+
+
         exit();
     }
 
