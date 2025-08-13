@@ -73,7 +73,9 @@ class Chat {
                     <div class="col-8 card message-bg-${bg}">
                         <div class="card-body pb-1">
                             <div class="col-12">
-                                ${m.message}
+                                <pre>
+                                    ${m.message}
+                                </pre>
                             </div>
                             <div class="col-12 text-end fw-lighter" style="font-size: 12px;">
                                 ${date}
