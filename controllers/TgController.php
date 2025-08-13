@@ -142,7 +142,9 @@ class TgController extends AccessController
         if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
             $client = new Client();
             $client->chat_id = $newMTC->chat_id;
+            $client->f = $this->username;
             $client->i = $this->username;
+            $client->o = $this->username;
             $client->date_add = time();
             $client->save();
         }
