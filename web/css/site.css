@@ -115,12 +115,14 @@ a.desc:after {
 .message-bg-info {
     background-color: #0dcaf024;
 }
+
 .chat-text-input{
     border: 1px solid rgba(0, 0, 0, 0.176);
     border-radius: .5rem;
     height: 50px;
 
 }
+
 .chat-text-input-block .bi-send{
     right: 2rem;
     font-size: 26px;
@@ -128,6 +130,7 @@ a.desc:after {
     top: 8px;
     transition: .5s;
 }
+
 .chat-text-input-block .bi-send:hover{
     color: #0dcaf0;
 }
