@@ -31,9 +31,9 @@ class ChatController extends AccessController
             ];
         }
         return $this->render('index',
-        [
-            'chats' => $chatsWithClientForm,
-        ]);
+            [
+                'chats' => $chatsWithClientForm,
+            ]);
     }
 
     /**
@@ -44,7 +44,7 @@ class ChatController extends AccessController
      */
     public function actionGetMessages(int $chat_id): Response
     {
-        if(!$this->request->isAjax){
+        if (!$this->request->isAjax) {
             throw new MethodNotAllowedHttpException("Only ajax requests are allowed");
         }
 
@@ -62,12 +62,12 @@ class ChatController extends AccessController
      */
     public function actionSetRead(int $chat_id): Response
     {
-        if(!$this->request->isAjax){
+        if (!$this->request->isAjax) {
             throw new MethodNotAllowedHttpException("Only ajax requests are allowed");
         }
 
 
-        ChatMessage::updateAll(['date_read' => time()],['chat_id' => $chat_id, 'date_read' => null]);
+        ChatMessage::updateAll(['date_read' => time()], ['chat_id' => $chat_id, 'date_read' => null]);
         return $this->asJson(true);
     }
 
@@ -81,14 +81,14 @@ class ChatController extends AccessController
      */
     public function actionClose(int $id): Response
     {
-        if(!$this->request->isAjax){
+        if (!$this->request->isAjax) {
             throw new MethodNotAllowedHttpException("Only ajax requests are allowed");
         }
 
         $mtc = ManagerToChat::findOne(['chat_id' => $id]);
         $mtc->status_id = 0;
 
-        if(!$mtc->save()){
+        if (!$mtc->save()) {
             throw new ServerErrorHttpException("Failed to close message chat");
         }
 
@@ -104,7 +104,7 @@ class ChatController extends AccessController
      */
     public function actionSendMessage(): Response
     {
-        if(!$this->request->isPost){
+        if (!$this->request->isPost) {
             throw new MethodNotAllowedHttpException("Only post requests are allowed");
         }
 
@@ -114,13 +114,18 @@ class ChatController extends AccessController
         $msg->author_id = Yii::$app->user->identity->id;
         $msg->date_add = time();
         $msg->date_send = time();
-        if(!$msg->save()){
+        if (!$msg->save()) {
             throw new ServerErrorHttpException("Failed to save message" . print_r($msg->getErrors(), true));
         }
 
+        $mtc = ManagerToChat::find()
+            ->where(['chat_id' => $msg->chat_id])
+            ->with('manager')
+            ->one();
+
         $telegram = Yii::$app->telegram;
         $telegram->sendMessage([
-            'chat_id' => $msg->chat_id,
+            'chat_id' => $mtc->manager->tg_id,
             'text' => $this->request->post('message')
         ]);
 
