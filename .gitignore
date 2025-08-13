@@ -37,3 +37,4 @@ tests/_support/_generated
 /config/domine.php
 /config/params.php
 /config/mailer.php
+/web/js/config.js
