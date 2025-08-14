@@ -121,17 +121,12 @@ class ChatController extends AccessController
         $telegram = Yii::$app->telegram;
         $chat_id = (int)$this->request->post('chat_id');
 
-        try {
-            $telegram->getChat(['chat_id' => $chat_id]);
+
             // Продолжаем отправку сообщения
             $telegram->sendMessage([
                 'chat_id' => $chat_id,
                 'text' => $this->request->post('message')
             ]);
-        } catch (\TelegramBot\Api\Exception $e) {
-            // Логи или обработка ошибки
-            Yii::warning("Error sending message: {$e->getMessage()}");
-        }
 
         return $this->asJson(true);
     }
