@@ -14,6 +14,7 @@ use Yii;
  * @property int|null $date_add
  * @property int|null $date_read
  * @property int|null $date_send
+ * @property int|null $user_chat_id
  */
 class ChatMessage extends \yii\db\ActiveRecord
 {
@@ -35,7 +36,7 @@ class ChatMessage extends \yii\db\ActiveRecord
         return [
             [['author_id', 'date_add', 'date_read'], 'default', 'value' => null],
             [['chat_id', 'message'], 'required'],
-            [['chat_id', 'author_id', 'date_add', 'date_read', 'date_send'], 'integer'],
+            [['chat_id', 'author_id', 'date_add', 'date_read', 'date_send', 'user_chat_id'], 'integer'],
             [['message'], 'string', 'max' => 4100],
         ];
     }

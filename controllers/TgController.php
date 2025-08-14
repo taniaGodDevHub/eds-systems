@@ -280,6 +280,13 @@ Email: ".$newManager->email." \n
                 $this->selectManager();
             }
 
+            $localMsg = new ChatMessage();
+            $localMsg->chat_id = $issetManager->manager->tg_id;
+            $localMsg->message = $this->command;
+            $localMsg->date_add = time();
+            $localMsg->user_chat_id = $this->chat_id;
+            $localMsg->save();
+
             $this->telegram->sendMessage([
                 'chat_id' => $issetManager->manager->tg_id,
                 'text' => $this->command. "\nКлиент: #$this->chat_id#"
