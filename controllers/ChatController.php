@@ -118,14 +118,9 @@ class ChatController extends AccessController
             throw new ServerErrorHttpException("Failed to save message" . print_r($msg->getErrors(), true));
         }
 
-        $mtc = ManagerToChat::find()
-            ->where(['chat_id' => $msg->chat_id])
-            ->with('manager')
-            ->one();
-
         $telegram = Yii::$app->telegram;
         $telegram->sendMessage([
-            'chat_id' => $mtc->manager->tg_id,
+            'chat_id' => (int)$msg->chat_id,
             'text' => $this->request->post('message')
         ]);
 
