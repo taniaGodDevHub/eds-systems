@@ -125,7 +125,7 @@ class ChatController extends AccessController
             // Продолжаем отправку сообщения
             $telegram->sendMessage([
                 'chat_id' => $chat_id,
-                'text' => strip_tags(str_replace('<br>', "\n", $this->request->post('message')))
+                'text' => str_replace('<br>', "\n", $this->request->post('message'))
             ]);
 
         return $this->asJson(true);
