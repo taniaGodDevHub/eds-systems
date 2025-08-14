@@ -85,6 +85,9 @@ class TgController extends AccessController
 
     private function selectManager($client_chat_id = false)
     {
+        Yii::info("Входящий client_chat_id: $client_chat_id", 'tg');
+        Yii::info("Текущий chat_id $this->chat_id", 'tg');
+
         $managers = User::find()
             ->joinWith('role')
             ->where(['auth_assignment.item_name' => 'user'])
@@ -138,10 +141,11 @@ class TgController extends AccessController
         }
         Yii::info("Выбрали менеджера с ИД $min_key", 'tg');
 
+        Yii::info("chat_id перед записью менеджера в базу $this->chat_id", 'tg');
         $newMTC = new ManagerToChat();
         $newMTC->chat_id = $this->chat_id;
         $newMTC->manager_id = $min_key;
-        $newMTC->client_id = $client_chat_id ? $client_chat_id : $this->chat_id;
+        $newMTC->client_id = $client_chat_id ?: $this->chat_id;
         $newMTC->save();
 
         if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
