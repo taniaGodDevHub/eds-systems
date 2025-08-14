@@ -150,7 +150,7 @@ class TgController extends AccessController
         if(!$newMTC->save()){
             Yii::info("Не удалось сохранить." . print_r($newMTC->getErrors(), true), 'tg');
         }else{
-            Yii::info("Сохранили" . print_r($newMTC, true), 'tg');
+            Yii::info("Сохранили ", 'tg');
         }
 
         if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
