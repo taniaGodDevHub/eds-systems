@@ -83,7 +83,7 @@ class TgController extends AccessController
         }
     }
 
-    private function selectManager()
+    private function selectManager($client_chat_id = false)
     {
         $managers = User::find()
             ->joinWith('role')
@@ -141,7 +141,7 @@ class TgController extends AccessController
         $newMTC = new ManagerToChat();
         $newMTC->chat_id = $this->chat_id;
         $newMTC->manager_id = $min_key;
-        $newMTC->client_id = $this->chat_id;
+        $newMTC->client_id = $client_chat_id ? $client_chat_id : $this->chat_id;
         $newMTC->save();
 
         if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
@@ -182,6 +182,7 @@ Email: ".$newManager->email." \n
         $localMsg->author_id = $newManager->user_id;
         $localMsg->date_add = time();
         $localMsg->date_send = time();
+        $localMsg->user_chat_id = $client_chat_id;
         $localMsg->save();
 
         Yii::info("Отправляем сообщение менеджеру о новом клиенте", 'tg');
@@ -197,6 +198,7 @@ Email: ".$newManager->email." \n
         $localMsg->chat_id = $this->chat_id;
         $localMsg->message = $msg;
         $localMsg->date_add = time();
+        $localMsg->user_chat_id = $client_chat_id;
         $localMsg->save();
 
 
@@ -299,7 +301,7 @@ Email: ".$newManager->email." \n
 
             if(empty($issetManager)){
                 Yii::info("У клиента нет менеджера. Идём в выбор", 'tg');
-                $this->selectManager();
+                $this->selectManager($this->chat_id);
             }
             Yii::info("У клиента есть менеджер", 'tg');
 
