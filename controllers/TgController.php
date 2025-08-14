@@ -152,7 +152,7 @@ class TgController extends AccessController
         }else{
             Yii::info("Сохранили" . print_r($newMTC, true), 'tg');
         }
-exit();
+
         if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
             Yii::info("Клиента ещё нет с ИД $client_chat_id. Создаём", 'tg');
             $client = new Client();
