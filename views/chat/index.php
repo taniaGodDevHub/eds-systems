@@ -121,15 +121,17 @@ $hasNew = false;
                                     aria-autocomplete="list"
                                     aria-label="Введите сообщение"
                                     aria-owns="emoji-suggestion"
-                                    class="overflow-y-scroll chat-text-input p-3"
+                                    class="chat-text-input p-3"
                                     contenteditable="true"
                                     role="textbox"
                                     spellcheck="true"
                                     tabindex="10"
                                     aria-placeholder="Введите сообщение"
                                     style="
-                                    user-select: text;
-                                    word-break: break-word;"
+                                        user-select: text;
+                                        word-break: break-word;
+                                        overflow-y: scroll;
+                                    "
                             >
 
                             </div>

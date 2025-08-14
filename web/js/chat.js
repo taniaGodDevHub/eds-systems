@@ -23,7 +23,7 @@ class Chat {
                 event.preventDefault(); // Предотвращение стандартного поведения браузера
 
                 this.chat_text_input.val(this.chat_text_input.val().replace(['<div>', "</div>"], ''))
-                this.chat_text_input.val(this.chat_text_input.val() + '<br>')
+                this.chat_text_input.insertAdjacentHTML('beforeend', '<br>')
             }
         });
     }
