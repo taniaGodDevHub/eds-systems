@@ -242,7 +242,7 @@ class Chat {
 
             $.ajax(
                 {
-                    url: config.indexUrl + '?r=chat/send-message&chat_id=' + chat_id,
+                    url: config.indexUrl + '?r=chat/send-message',
                     method: 'POST',
                     data:{
                         _csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
