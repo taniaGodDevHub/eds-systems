@@ -317,6 +317,20 @@ Email: ".$newManager->email." \n
             }
             Yii::info("У клиента есть менеджер", 'tg');
 
+            if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
+                Yii::info("Клиента ещё нет с ИД $this->chat_id. Создаём", 'tg');
+                $client = new Client();
+                $client->chat_id = $issetManager->chat_id;
+                $client->f = $this->username;
+                $client->i = $this->username;
+                $client->o = $this->username;
+                $client->date_add = time();
+
+                if(!$client->save()){
+                    Yii::info("Не удалось сохранить." . print_r($client->getErrors(), true), 'tg');
+                }
+            }
+
             Yii::info("Сохраняем сообщение в базу", 'tg');
             $localMsg = new ChatMessage();
             $localMsg->chat_id = $issetManager->manager->tg_id;
