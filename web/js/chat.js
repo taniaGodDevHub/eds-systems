@@ -22,8 +22,8 @@ class Chat {
             if (event.key === 'Enter') {
                 event.preventDefault(); // Предотвращение стандартного поведения браузера
 
-                // Добавляем <br> вручную
-                document.execCommand('insertHTML', false, '<br>');
+                this.chat_text_input.val(this.chat_text_input.val().replace(['<div>', "</div>"], ''))
+                this.chat_text_input.val(this.chat_text_input.val() + '<br>')
             }
         });
     }
