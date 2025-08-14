@@ -20,9 +20,9 @@ class Chat {
         this.chat_text_input.on('keyup', ()=> this.checkCount(this.chat_text_input.html()))
         this.chat_text_input.on('keydown', function(event) {
             if (event.key === 'Enter') {
-                event.preventDefault(); // Предотвращение стандартного поведения браузера
+                //event.preventDefault(); // Предотвращение стандартного поведения браузера
 
-                //this.chat_text_input.val(this.chat_text_input.val().replace(['<div>', "</div>"], ''))
+                this.chat_text_input.val(this.chat_text_input.val().replace(['<div>', "</div>"], ''))
             }
         });
     }
