@@ -48,6 +48,7 @@ class TgController extends AccessController
         Yii::info("Вебхук от ТG" . print_r($this->request->get(), true). print_r($postData,true), 'tg');
 
         if(isset($this->telegram->input->message->text)){
+            Yii::info("Сообщение не пустое", 'tg');
             $this->command = $this->telegram->input->message->text;
             $this->chat_id = $this->telegram->input->message->chat->id;
             $this->username = $this->telegram->input->message->chat->username;
@@ -56,24 +57,26 @@ class TgController extends AccessController
             return true;
         }
 
-        $tgMessage = new TgMessage();
+        /*$tgMessage = new TgMessage();
         $tgMessage->chat_id = $this->chat_id;
         $tgMessage->message_id = $this->telegram->input->message->message_id;
         $tgMessage->author_id = $this->telegram->input->message->from->id;
         $tgMessage->text = $this->command;
-        $tgMessage->save();
+        $tgMessage->save();*/
 
         switch ($this->command){
             case '/start':
-
+                Yii::info("Выбираем менеджера", 'tg');
                 $this->selectManager();
                 break;
             case '/connect':
 
+                Yii::info("Коннектим", 'tg');
                 $this->connect_user($this->username, $this->chat_id);
                 break;
             default:
 
+                Yii::info("Просто сообщение", 'tg');
                 $this->unknown();
 
                 break;
@@ -89,7 +92,7 @@ class TgController extends AccessController
             ->all();
 
         if(empty($managers)){
-
+            Yii::info("Менеджеров нет", 'tg');
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
                 'text' => "Сейчас нет ни одного менеджера в системе.",
@@ -103,6 +106,7 @@ class TgController extends AccessController
             ->one();
 
         if(!empty($issetManager)){
+            Yii::info("Менеджер уже назначен", 'tg');
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
                 'text' => "Вам уже назначен менеджер: \n
@@ -132,7 +136,7 @@ class TgController extends AccessController
                 $min_key = $id;
             }
         }
-
+        Yii::info("Выбрали менеджера с ИД $min_key", 'tg');
 
         $newMTC = new ManagerToChat();
         $newMTC->chat_id = $this->chat_id;
@@ -141,6 +145,7 @@ class TgController extends AccessController
         $newMTC->save();
 
         if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
+            Yii::info("Клиента ещё нет. Создаём", 'tg');
             $client = new Client();
             $client->chat_id = $newMTC->chat_id;
             $client->f = $this->username;
@@ -164,12 +169,13 @@ Email: ".$newManager->email." \n
 Часы работы: ".$newManager->work_time ."\n 
 
 Он уже на связи в этом чате.";
-
+        Yii::info("Отправляем сообщение клиенту с назначенным менеджером", 'tg');
         $this->telegram->sendMessage([
             'chat_id' => $this->chat_id,
             'text' => $msg
         ]);
 
+        Yii::info("Записываем сообщение в базу", 'tg');
         $localMsg = new ChatMessage();
         $localMsg->chat_id = $this->chat_id;
         $localMsg->message = $msg;
@@ -178,12 +184,15 @@ Email: ".$newManager->email." \n
         $localMsg->date_send = time();
         $localMsg->save();
 
+        Yii::info("Отправляем сообщение менеджеру о новом клиенте", 'tg');
+
         $msg = "Новый клиент: " . $this->clientFirstName;
         $this->telegram->sendMessage([
             'chat_id' => $newManagerUser->tg_id,
             'text' => $msg
         ]);
 
+        Yii::info("Записываем сообщение в базу", 'tg');
         $localMsg = new ChatMessage();
         $localMsg->chat_id = $this->chat_id;
         $localMsg->message = $msg;
@@ -206,6 +215,7 @@ Email: ".$newManager->email." \n
             ->one();
 
         if(empty($user)){
+            Yii::info("Пользователь в базе не найден", 'tg');
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
                 'text' => "Не найден пользователь с таким логином телеграм. Добавьте логин тг в настройках профиля пользователя.",
@@ -221,6 +231,9 @@ Email: ".$newManager->email." \n
                 'text' => "Данные не сохранились. Попробуйте ещё раз или напишите с техническую поддержку.".print_r($user->getErrors(),true),
             ]);
         }
+
+        Yii::info("Сконнектили менеджера. Отправляем сообщение", 'tg');
+
         $this->telegram->sendMessage([
             'chat_id' => $this->chat_id,
             'text' => "Всё сработало. Ваша учётная запись связана с этим чатом"
@@ -236,10 +249,12 @@ Email: ".$newManager->email." \n
     {
         //Определяем роль написавшего
         if(User::find()->where(['tg_id' => $this->chat_id])->exists()){
+            Yii::info("Это сообщение от менеджера", 'tg');
             //Это менеджер
             //Если нет указание на то, что это ответ отправляем сообщение о том, что нужно именно ответить.
             if(!$this->telegram->input->message->reply_to_message){
 
+                Yii::info("Не ответ. Просим отвечать", 'tg');
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
                     'text' => "Сообщение не отправлено. Для отправки сообщения используйте функцию телеграм \"Ответить\""
@@ -253,7 +268,11 @@ Email: ".$newManager->email." \n
 // Извлекаем подстроку между первой и последней решеткой
             $result = substr($this->telegram->input->message->reply_to_message['text'], $firstHashPos + 1, $secondHashPos - $firstHashPos - 1);
 
+            Yii::info("Подстрока с ИД чата клиента: $result", 'tg');
+
             if (empty($result)){
+
+                Yii::info("Подстрока пуста. Отправляем сообщение менеджеру", 'tg');
 
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
@@ -262,6 +281,7 @@ Email: ".$newManager->email." \n
                 exit();
             }
 
+            Yii::info("Отправляем сообщение клиенту", 'tg');
             $this->telegram->sendMessage([
                 'chat_id' => (int)$result,
                 'text' => $this->command
@@ -270,6 +290,7 @@ Email: ".$newManager->email." \n
 
 
         }else{
+            Yii::info("Это клиент с chat_id ". $this->chat_id, 'tg');
             //Это клиент
             $issetManager = ManagerToChat::find()
                 ->where(['chat_id' => $this->chat_id])
@@ -277,9 +298,12 @@ Email: ".$newManager->email." \n
                 ->one();
 
             if(empty($issetManager)){
+                Yii::info("У клиента нет менеджера. Идём в выбор", 'tg');
                 $this->selectManager();
             }
+            Yii::info("У клиента есть менеджер", 'tg');
 
+            Yii::info("Сохраняем сообщение в базу", 'tg');
             $localMsg = new ChatMessage();
             $localMsg->chat_id = $issetManager->manager->tg_id;
             $localMsg->message = $this->command;
@@ -287,6 +311,7 @@ Email: ".$newManager->email." \n
             $localMsg->user_chat_id = $this->chat_id;
             $localMsg->save();
 
+            Yii::info("Пересылаем сообщение менеджеру", 'tg');
             $this->telegram->sendMessage([
                 'chat_id' => $issetManager->manager->tg_id,
                 'text' => $this->command. "\nКлиент: #$this->chat_id#"
