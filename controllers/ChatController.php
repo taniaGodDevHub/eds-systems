@@ -120,7 +120,7 @@ class ChatController extends AccessController
 
         $telegram = Yii::$app->telegram;
         $telegram->sendMessage([
-            'chat_id' => (int)$msg->chat_id,
+            'chat_id' => var_dump((int)$msg->chat_id),
             'text' => $this->request->post('message')
         ]);
 
