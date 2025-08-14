@@ -141,11 +141,12 @@ class TgController extends AccessController
         }
         Yii::info("Выбрали менеджера с ИД $min_key", 'tg');
 
-        Yii::info("chat_id перед записью менеджера в базу $this->chat_id", 'tg');
+        $chat_id = $this->chat_id;
+        Yii::info("chat_id перед записью менеджера в базу $chat_id", 'tg');
         $newMTC = new ManagerToChat();
         $newMTC->chat_id = $this->chat_id;
         $newMTC->manager_id = $min_key;
-        $newMTC->client_id = $this->chat_id;
+        $newMTC->client_id = $chat_id;
         if(!$newMTC->save()){
             Yii::info("Не удалось сохранить." . print_r($newMTC->getErrors(), true), 'tg');
         }else{
