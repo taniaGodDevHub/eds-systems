@@ -146,17 +146,22 @@ class TgController extends AccessController
         $newMTC->chat_id = $this->chat_id;
         $newMTC->manager_id = $min_key;
         $newMTC->client_id = $client_chat_id ?: $this->chat_id;
-        $newMTC->save();
+        if(!$newMTC->save()){
+            Yii::info("Не удалось сохранить." . print_r($newMTC->getErrors(), true), 'tg');
+        }
 
         if(!Client::find()->where(['chat_id' => $this->chat_id])->exists()){
-            Yii::info("Клиента ещё нет. Создаём", 'tg');
+            Yii::info("Клиента ещё нет с ИД $client_chat_id. Создаём", 'tg');
             $client = new Client();
             $client->chat_id = $newMTC->chat_id;
             $client->f = $this->username;
             $client->i = $this->username;
             $client->o = $this->username;
             $client->date_add = time();
-            $client->save();
+
+            if(!$client->save()){
+                Yii::info("Не удалось сохранить." . print_r($client->getErrors(), true), 'tg');
+            }
         }
 
 
