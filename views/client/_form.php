@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 /** @var app\models\Client $model */
@@ -9,7 +10,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="client-form">
-
+    <?php Pjax::begin();?>
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'chat_id')->textInput(['disabled' => true]) ?>
@@ -25,5 +26,5 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
-
+<?php Pjax::end();?>
 </div>
