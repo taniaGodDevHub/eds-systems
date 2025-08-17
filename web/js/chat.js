@@ -237,6 +237,7 @@ class Chat {
             this.send_msg_btn.removeClass('text-info')
             this.send_msg_btn.addClass('text-danger')
         }else{
+            this.can_send = true
             this.chat_text_count.removeClass("text-danger")
             this.send_msg_btn.removeClass('text-danger')
             this.send_msg_btn.addClass('text-info')
