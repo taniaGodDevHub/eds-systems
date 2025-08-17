@@ -49,13 +49,6 @@ $hasNew = false;
                                                             'data-bs-target' => '#edit_client_' . $chat['client_form']->id
                                                         ]
                                                     ); ?>
-                                                    <?php Modal::begin([
-                                                        'id' => 'edit_client_' . $chat['client_form']->id,
-                                                        'title' => 'Редактирование клиента',
-                                                    ]); ?>
-
-                                                    <?= $this->render('../client/_form', ['model' => $chat['client_form']]); ?>
-                                                    <?php Modal::end(); ?>
                                                 </div>
                                                 <div class="col-8">
                                                     <?php if (empty($chat['client_form'])) { ?>
@@ -82,6 +75,13 @@ $hasNew = false;
                                             </div>
                                         </div>
                                     </div>
+                                    <?php Modal::begin([
+                                        'id' => 'edit_client_' . $chat['client_form']->id,
+                                        'title' => 'Редактирование клиента',
+                                    ]); ?>
+
+                                    <?= $this->render('../client/_form', ['model' => $chat['client_form']]); ?>
+                                    <?php Modal::end(); ?>
                                 <?php } ?>
                                 <?php if($hasNew){?>
                                     <script>
