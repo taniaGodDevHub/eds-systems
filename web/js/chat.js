@@ -69,7 +69,7 @@ class Chat {
 
         this.setRead(chat_id)
 
-        setTimeout(()=>this.selectChat(chat_id), 5000)
+        setTimeout(()=>this.selectChat(chat_id), 60000)
     }
 
     updateMessageList() {
