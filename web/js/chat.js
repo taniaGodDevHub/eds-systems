@@ -26,6 +26,7 @@ class Chat {
             }
         });
 
+        console.log($(document))
         $(document).on('pjax:end', function() {
             window.location.reload()
         });
