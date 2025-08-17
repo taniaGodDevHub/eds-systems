@@ -195,7 +195,10 @@ Email: ".$newManager->email." \n
         $localMsg->date_add = time();
         $localMsg->date_send = time();
         $localMsg->user_chat_id = $client_chat_id;
-        $localMsg->save();
+
+        if(!$localMsg->save()){
+            Yii::error("е удалось записать". print_r($localMsg->getErrors(), true), 'tg');
+        }
 
         Yii::info("Отправляем сообщение менеджеру о новом клиенте", 'tg');
 
@@ -211,7 +214,9 @@ Email: ".$newManager->email." \n
         $localMsg->message = $msg;
         $localMsg->date_add = time();
         $localMsg->user_chat_id = $client_chat_id;
-        $localMsg->save();
+        if(!$localMsg->save()){
+            Yii::error("е удалось записать". print_r($localMsg->getErrors(), true), 'tg');
+        }
 
 
         exit();
