@@ -31,6 +31,8 @@ class Chat {
             window.location.href = config.indexUrl + '?r=chat/index'
         });
 
+        setInterval(()=>this.getMessage(), 10000)
+
     }
 
     /**
