@@ -342,7 +342,9 @@ Email: ".$newManager->email." \n
             $localMsg->message = $this->command;
             $localMsg->date_add = time();
             $localMsg->user_chat_id = $this->chat_id;
-            $localMsg->save();
+            if(!$localMsg->save()){
+                Yii::info("Не удалось сохранить." . print_r($localMsg->getErrors(), true), 'tg');
+            }
 
             Yii::info("Пересылаем сообщение менеджеру", 'tg');
             $this->telegram->sendMessage([
