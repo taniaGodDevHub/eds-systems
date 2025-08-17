@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Client;
 use app\models\ClientSearch;
+use yii\db\Exception;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -94,7 +95,10 @@ class ClientController extends AccessController
 
         if ($this->request->isPost) {
             $model->load($this->request->post());
-            $model->save();
+
+            if(!$model->save()){
+                throw new Exception("Не удалось сохранить клиента" . print_r($model->getErrors(), true));
+            }
         }
 
         return $this->render('update', [
