@@ -338,7 +338,7 @@ Email: ".$newManager->email." \n
 
             Yii::info("Сохраняем сообщение в базу", 'tg');
             $localMsg = new ChatMessage();
-            $localMsg->chat_id = $issetManager->manager->tg_id;
+            $localMsg->chat_id = $this->chat_id;
             $localMsg->message = $this->command;
             $localMsg->date_add = time();
             $localMsg->user_chat_id = $this->chat_id;
