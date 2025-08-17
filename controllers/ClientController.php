@@ -94,15 +94,12 @@ class ClientController extends AccessController
         $model = $this->findModel($id);
 
         if ($this->request->isPost) {
-            echo "POST";
             $model->load($this->request->post());
-            echo "LOAD";
+
             if(!$model->save()){
                 throw new Exception("Не удалось сохранить клиента" . print_r($model->getErrors(), true));
             }
-            return "SAVE";
         }
-        echo "NOT POST";
 
         return $this->render('update', [
             'model' => $model,
