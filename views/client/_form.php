@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
@@ -11,7 +12,7 @@ use yii\widgets\Pjax;
 
 <div class="client-form">
     <?php Pjax::begin(['id' => 'pjax-container-' . $model->id]);?>
-    <?php $form = ActiveForm::begin(['method' => 'post', 'options' => ['data-pjax' => true]]); ?>
+    <?php $form = ActiveForm::begin(['action' => Url::to(['/client/update', 'id' => $model->id]), 'method' => 'post', 'options' => ['data-pjax' => true]]); ?>
 
     <?= $form->field($model, 'chat_id')->textInput(['disabled' => true]) ?>
 
