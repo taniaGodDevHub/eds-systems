@@ -12,6 +12,7 @@ class Chat {
     chat_text_input = $('#chat_text_input')
     chat_text_count = $('#chat_text_count')
     send_msg_btn = $('#send_msg_btn')
+    current_interval_id = false
 
     /**
      * Создаёт стартовые слушатели
@@ -31,8 +32,6 @@ class Chat {
             window.location.href = config.indexUrl + '?r=chat/index'
         });
 
-        setInterval(()=>this.getMessage(), 10000)
-
     }
 
     /**
@@ -42,6 +41,8 @@ class Chat {
     async selectChat(chat_id) {
 
         console.log('-=selectChat=-')
+
+        clearInterval(this.current_interval_id)
 
         this.message_list.html("")
         this.message_list.html(`<div class="d-flex justify-content-center mt-5">
@@ -70,6 +71,8 @@ class Chat {
         this.updateListHeader()
 
         this.setRead(chat_id)
+
+        this.current_interval_id = setInterval(()=>this.getMessage(chat_id), 10000)
     }
 
     updateMessageList() {
