@@ -90,7 +90,7 @@ class TgController extends AccessController
 
         $managers = User::find()
             ->joinWith('role')
-            ->where(['auth_assignment.item_name' => 'admin'])
+            ->where(['auth_assignment.item_name' => 'user'])
             ->andWhere(['not', ['tg_id' => null]])
             ->all();
 
