@@ -11,7 +11,7 @@ use yii\widgets\Pjax;
 
 <div class="client-form">
     <?php Pjax::begin();?>
-    <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true]]); ?>
+    <?php $form = ActiveForm::begin(['method' => 'post', 'options' => ['data-pjax' => true]]); ?>
 
     <?= $form->field($model, 'chat_id')->textInput(['disabled' => true]) ?>
 
