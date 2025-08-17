@@ -100,7 +100,7 @@ class ClientController extends AccessController
             if(!$model->save()){
                 throw new Exception("Не удалось сохранить клиента" . print_r($model->getErrors(), true));
             }
-            echo "SAVE";
+            return "SAVE";
         }
         echo "NOT POST";
 
