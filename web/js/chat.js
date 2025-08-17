@@ -28,7 +28,7 @@ class Chat {
 
         console.log($(document))
         $(document).on('pjax:end', function() {
-            window.location.reload()
+            window.location.href = config.indexUrl + '?r=chat/index'
         });
 
     }
