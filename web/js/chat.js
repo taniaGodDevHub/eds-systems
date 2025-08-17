@@ -25,6 +25,9 @@ class Chat {
                 this.chat_text_input.val(this.chat_text_input.val().replace(['<div>', "</div>"], ''))
             }
         });
+        $(document).on('pjax:end', function() {
+            window.location.reload()
+        });
     }
 
     /**
