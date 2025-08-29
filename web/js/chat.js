@@ -12,17 +12,44 @@ class Chat {
     chat_text_input = $('#chat_text_input')
     chat_text_count = $('#chat_text_count')
     send_msg_btn = $('#send_msg_btn')
+    lastMsgTime = 0
+    chatMsgInterval = false
 
     /**
      * Создаёт стартовые слушатели
      */
     events(){
+        let self = this
         this.chat_text_input.on('keyup', ()=> this.checkCount(this.chat_text_input.html()))
-        this.chat_text_input.on('keydown', function(event) {
+        his.chat_text_input.on('keyup', function(event) {
             if (event.key === 'Enter') {
-                //event.preventDefault(); // Предотвращение стандартного поведения браузера
+                console.log('enter');
+                if (event.ctrlKey) {
+                    console.log('ctrl');
+                    console.log('self.chat_text_input', self.chat_text_input);
+                    console.log('self.chat_text_input.text()', self.chat_text_input.text());
 
-                this.chat_text_input.val(this.chat_text_input.val().replace(['<div>', "</div>"], ''))
+                    // Текущее положение курсора
+                    let selection = window.getSelection();
+                    let range = selection.getRangeAt(0);
+
+                    // Вставляем <br> там, где находился курсор
+                    range.deleteContents();
+                    let brNode = document.createElement('br');
+                    range.insertNode(brNode);
+
+                    // Возвращаем курсор после <br>
+                    range.setStartAfter(brNode);
+                    range.collapse(true);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+
+                    event.preventDefault(); // Предотвратим стандартное поведение Enter
+                } else {
+                    // Обычный Enter: вызов функции отправки
+                    event.preventDefault();
+                    self.sendMsg();
+                }
             }
         });
 
@@ -40,6 +67,8 @@ class Chat {
     async selectChat(chat_id) {
 
         console.log('-=selectChat=-')
+
+        clearInterval(this.chatMsgInterval)
 
         this.message_list.html("")
         this.message_list.html(`<div class="d-flex justify-content-center mt-5">
@@ -69,7 +98,9 @@ class Chat {
 
         this.setRead(chat_id)
 
-        setTimeout(()=>this.selectChat(chat_id), 60000)
+        setInterval(async () => {
+            await this.getMessage(chat_id)
+        }, 5000)
     }
 
     updateMessageList() {
@@ -78,11 +109,15 @@ class Chat {
         let html = ``
         let position, bg, date, read_class, last_msg_id
         for (const m of this.messages) {
+            if(this.lastMsgTime > m.date_add){
+                continue;
+            }
             console.log('m', m)
             position = m.author_id === null ? 'end' : 'start'
             bg = m.author_id === null ? 'info' : 'success'
             date = this.timestampToDate(m.date_add)
             last_msg_id = m.id
+            this.lastMsgTime = m.date_add
             html += `
                 <div id="chat_message_${m.id}" class="row justify-content-${position} mt-3">
                     <div class="col-8 card message-bg-${bg}">
@@ -97,10 +132,9 @@ class Chat {
                     </div>
                 </div>
             `
+            this.message_list.append(html)
         }
 
-        this.message_list.html("")
-        this.message_list.append(html)
         const element = document.querySelector('#chat_message_' + last_msg_id); // выбираем нужный блок
         if(element){
             element.scrollIntoView({ behavior: 'smooth', block: 'end' });
