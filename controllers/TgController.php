@@ -315,7 +315,6 @@ Email: ".$newManager->email."
                 Yii::info("Не удалось сохранить." . print_r($localMsg->getErrors(), true), 'tg');
             }
 
-
         }else{
             Yii::info("Это клиент с chat_id ". $this->chat_id, 'tg');
             //Это клиент
