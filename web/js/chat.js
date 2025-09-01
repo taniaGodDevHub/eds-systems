@@ -116,7 +116,7 @@ class Chat {
             if(this.lastMsgTime >= m.date_add){
                 continue;
             }
-            console.log('m', m)
+            //console.log('m', m)
             position = m.author_id === null ? 'end' : 'start'
             bg = m.author_id === null ? 'info' : 'success'
             date = this.timestampToDate(m.date_add)
@@ -179,7 +179,7 @@ class Chat {
                 url: config.indexUrl + '?r=chat/get-messages&chat_id=' + chat_id,
                 method: 'GET',
                 success: function (data) {
-                    console.log(data)
+                    //console.log(data)
                     self.messages = data
                     self.updateMessageList()
                 },
