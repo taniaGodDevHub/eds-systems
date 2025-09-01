@@ -169,7 +169,7 @@ class Chat {
      */
     getMessage(chat_id) {
         console.log('-=getMessage=-')
-
+        console.log('chat_id', chat_id)
         let self = this
         $.ajax(
             {
