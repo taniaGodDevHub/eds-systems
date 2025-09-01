@@ -4,6 +4,7 @@ namespace app\controllers;
 
 
 use app\models\ChatMessage;
+use app\models\Client;
 use app\models\ManagerToChat;
 use Yii;
 use yii\db\ActiveRecord;
@@ -25,6 +26,18 @@ class ChatController extends AccessController
 
         $chatsWithClientForm = [];
         foreach ($chats as $chat) {
+
+            $client_form = $chat->client;
+            if(empty($client_form)){
+
+                $client_form = new Client();
+                $client_form->chat_id = $chat->chat_id;
+                $client_form->f = "Нет данных";
+                $client_form->i = "Нет данных";
+                $client_form->o = "Нет данных";
+                $client_form->save();
+            }
+
             $chatsWithClientForm[] = [
                 'chat' => $chat,
                 'client_form' => $chat->client,

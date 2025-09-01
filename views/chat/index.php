@@ -26,10 +26,7 @@ $hasNew = false;
                                         У вас нет ни одного чата с клиентом.
                                     </div>
                                 </div>
-                            <?php } else {
-                            echo "<pre>";
-                            print_r($chats);die;
-                                ?>
+                            <?php } else {?>
                                 <?php foreach ($chats as $chat) { ?>
                                     <div id="chat_list_item_<?= $chat['chat']->chat_id ?>"
                                          class="card mb-1 cursor-pointer chat-list-item"
