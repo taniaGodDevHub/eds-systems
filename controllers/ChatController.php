@@ -21,6 +21,7 @@ class ChatController extends AccessController
     {
         $chats = ManagerToChat::find()
             ->where(['manager_id' => Yii::$app->user->identity->id])
+            ->with('client')
             ->andWhere(['status_id' => 1])
             ->all();
 
