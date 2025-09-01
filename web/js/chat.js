@@ -109,6 +109,7 @@ class Chat {
         let html = ``
         let position, bg, date, read_class, last_msg_id
         for (const m of this.messages) {
+            console.log('this.lastMsgTime', this.lastMsgTime, 'm.date_add', m.date_add)
             if(this.lastMsgTime > m.date_add){
                 continue;
             }
