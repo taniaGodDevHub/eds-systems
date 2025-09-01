@@ -112,7 +112,7 @@ class TgController extends AccessController
             Yii::info("Менеджер уже назначен", 'tg');
             $this->telegram->sendMessage([
                 'chat_id' => $this->chat_id,
-                'text' => "Вам уже назначен менеджер: 
+                'text' => "Вам уже назначен менеджер: \n
     ".$issetManager->managerProfile->f." ".$issetManager->managerProfile->i." ".$issetManager->managerProfile->o." 
     Телефон: ".$issetManager->managerProfile->tel." ".(!empty($issetManager->managerProfile->sub_tel) ? " доб. ".$issetManager->managerProfile->sub_tel : '')." 
     Email: ".$issetManager->managerProfile->email." 
@@ -175,9 +175,9 @@ class TgController extends AccessController
         $newManagerUser = User::findOne(['id' => $newMTC->manager_id]);
 
         $msg = "Ваш менеджер: \n
-".$newManager->f." ".$newManager->i." ".$newManager->o." \n
-Телефон: ".$newManager->tel." ".(!empty($newManager->sub_tel) ? " доб. ".$newManager->sub_tel : '')." \n
-Email: ".$newManager->email." \n
+".$newManager->f." ".$newManager->i." ".$newManager->o." 
+Телефон: ".$newManager->tel." ".(!empty($newManager->sub_tel) ? " доб. ".$newManager->sub_tel : '')." 
+Email: ".$newManager->email." 
 Часы работы: ".$newManager->work_time ."\n 
 
 Он уже на связи в этом чате.";
