@@ -70,6 +70,8 @@ class Chat {
 
         clearInterval(this.chatMsgInterval)
 
+        this.lastMsgTime = 0
+
         this.message_list.html("")
         this.message_list.html(`<div class="d-flex justify-content-center mt-5">
           <div class="spinner-grow text-info" role="status">
