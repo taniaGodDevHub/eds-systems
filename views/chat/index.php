@@ -75,7 +75,9 @@ $hasNew = false;
                                             </div>
                                         </div>
                                     </div>
-                                    <?php Modal::begin([
+                                    <?php
+                                    print_r($chat);die;
+                                    Modal::begin([
                                         'id' => 'edit_client_' . $chat['client_form']->id,
                                         'title' => 'Редактирование клиента',
                                     ]); ?>
