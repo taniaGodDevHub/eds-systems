@@ -26,7 +26,10 @@ $hasNew = false;
                                         У вас нет ни одного чата с клиентом.
                                     </div>
                                 </div>
-                            <?php } else { ?>
+                            <?php } else {
+                            echo "<pre>";
+                            print_r($chats);die;
+                                ?>
                                 <?php foreach ($chats as $chat) { ?>
                                     <div id="chat_list_item_<?= $chat['chat']->chat_id ?>"
                                          class="card mb-1 cursor-pointer chat-list-item"
@@ -38,11 +41,6 @@ $hasNew = false;
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-2">
-                                                    <?php
-
-                                    echo "<pre>";
-                                    print_r($chat['client_form']->id);die;
-                                                    ?>
                                                     <?= Html::tag(
                                                         'i',
                                                         '',
