@@ -25,6 +25,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <title><?= Html::encode($this->title) ?></title>
+    <script>
+        let user_id = false
+        <?php if(!Yii::$app->user->isGuest){?>
+            user_id = <?= Yii::$app->user->identity->id?>
+        <?php }?>
+    </script>
+
+
     <?php $this->head() ?>
 </head>
 <body class="d-flex flex-column h-100">
