@@ -305,7 +305,15 @@ Email: ".$newManager->email."
                 'chat_id' => (int)$result,
                 'text' => $this->command
             ]);
-
+            Yii::info("Сохраняем сообщение в базу", 'tg');
+            $localMsg = new ChatMessage();
+            $localMsg->chat_id = (int)$result;
+            $localMsg->message = $this->command;
+            $localMsg->date_add = time();
+            $localMsg->user_chat_id = (int)$result;
+            if(!$localMsg->save()){
+                Yii::info("Не удалось сохранить." . print_r($localMsg->getErrors(), true), 'tg');
+            }
 
 
         }else{
