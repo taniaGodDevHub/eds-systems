@@ -145,4 +145,4 @@ $hasNew = false;
     </div>
 
 <?php
-$this->registerJsFile(Yii::getAlias('@httpweb') . '/js/chat.js'.time(), ['depends' => 'yii\web\JqueryAsset']);
+$this->registerJsFile(Yii::getAlias('@httpweb') . '/js/chat.js?v='.time(), ['depends' => 'yii\web\JqueryAsset']);
