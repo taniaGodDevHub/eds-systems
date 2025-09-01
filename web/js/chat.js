@@ -250,7 +250,7 @@ class Chat {
                 url: config.indexUrl + '?r=chat/set-read&chat_id=' + chat_id,
                 method: 'GET',
                 success: function (data) {
-                    console.log(data)
+                    //console.log(data)
                 },
                 error: function (error) {
                     console.error(error)
