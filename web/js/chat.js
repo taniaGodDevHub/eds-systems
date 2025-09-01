@@ -100,7 +100,8 @@ class Chat {
 
         this.setRead(chat_id)
 
-        setInterval(async () => {
+        this.chatMsgInterval = setInterval(async () => {
+
             await this.getMessage(chat_id)
         }, 5000)
     }
