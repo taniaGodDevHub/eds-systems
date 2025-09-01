@@ -38,6 +38,11 @@ $hasNew = false;
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-2">
+                                                    <?php
+
+                                    echo "<pre>";
+                                    print_r($chat['client_form']->id);die;
+                                                    ?>
                                                     <?= Html::tag(
                                                         'i',
                                                         '',
@@ -75,11 +80,9 @@ $hasNew = false;
                                             </div>
                                         </div>
                                     </div>
-                                    <?php /*
-                                    echo "<pre>";
-                                    print_r($chat['client_form']->id);die;*/
+                                    <?php
                                     Modal::begin([
-                                        'id' => 'edit_client_' . $chat['client_form']['id'],
+                                        'id' => 'edit_client_' . $chat['client_form']->id,
                                         'title' => 'Редактирование клиента',
                                     ]); ?>
 
