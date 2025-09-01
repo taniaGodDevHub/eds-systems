@@ -36,6 +36,7 @@ class ChatController extends AccessController
                 $client_form->f = "Нет данных";
                 $client_form->i = "Нет данных";
                 $client_form->o = "Нет данных";
+                $client_form->date_add = time();
                 $client_form->save();
             }
 
