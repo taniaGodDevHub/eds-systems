@@ -76,6 +76,7 @@ $hasNew = false;
                                         </div>
                                     </div>
                                     <?php
+                                    echo "<pre>";
                                     print_r($chat);die;
                                     Modal::begin([
                                         'id' => 'edit_client_' . $chat['client_form']->id,
