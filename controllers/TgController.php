@@ -190,7 +190,7 @@ Email: ".$newManager->email."
         Yii::info("Записываем сообщение в базу", 'tg');
         $localMsg = new ChatMessage();
         $localMsg->chat_id = $this->chat_id;
-        $localMsg->message = $msg;
+        $localMsg->message = str_replace('&nbsp;', '', $msg);
         $localMsg->author_id = $newManager->user_id;
         $localMsg->date_add = time();
         $localMsg->date_send = time();
@@ -211,7 +211,7 @@ Email: ".$newManager->email."
         Yii::info("Записываем сообщение в базу", 'tg');
         $localMsg = new ChatMessage();
         $localMsg->chat_id = $this->chat_id;
-        $localMsg->message = $msg;
+        $localMsg->message = str_replace('&nbsp;', '', $msg);
         $localMsg->date_add = time();
         $localMsg->user_chat_id = $this->chat_id;
         if(!$localMsg->save()){
@@ -308,7 +308,7 @@ Email: ".$newManager->email."
             Yii::info("Сохраняем сообщение в базу", 'tg');
             $localMsg = new ChatMessage();
             $localMsg->chat_id = (int)$result;
-            $localMsg->message = $this->command;
+            $localMsg->message = str_replace('&nbsp;', '', $this->command);
             $localMsg->date_add = time();
             $localMsg->user_chat_id = (int)$result;
             if(!$localMsg->save()){
@@ -346,7 +346,7 @@ Email: ".$newManager->email."
             Yii::info("Сохраняем сообщение в базу", 'tg');
             $localMsg = new ChatMessage();
             $localMsg->chat_id = $this->chat_id;
-            $localMsg->message = $this->command;
+            $localMsg->message = str_replace('&nbsp;', '', $this->command);
             $localMsg->date_add = time();
             $localMsg->user_chat_id = $this->chat_id;
             if(!$localMsg->save()){
