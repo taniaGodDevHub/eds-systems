@@ -54,6 +54,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             !Yii::$app->user->isGuest ?
             ['label' => 'Чаты', 'url' => ['/chat/index']]: '',
             Yii::$app->user->can('admin') ?
+            ['label' => 'Статистика', 'url' => ['/stat/index']]: '',
+            Yii::$app->user->can('admin') ?
                 [
                     'label' => 'Пользователи',
                     'items'=>[
