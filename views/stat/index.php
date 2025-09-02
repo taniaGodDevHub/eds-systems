@@ -1,7 +1,7 @@
 <?php
-echo "<pre>";
+/*echo "<pre>";
 print_r($s);
-echo "</pre>";
+echo "</pre>";*/
 ?>
     <div class="stat-index">
         <div class="row">
