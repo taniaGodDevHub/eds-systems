@@ -184,7 +184,7 @@ Email: ".$newManager->email."
         Yii::info("Отправляем сообщение клиенту с назначенным менеджером", 'tg');
         $this->telegram->sendMessage([
             'chat_id' => $this->chat_id,
-            'text' => $msg
+            'text' => str_replace('&nbsp;', '', $msg)
         ]);
 
         Yii::info("Записываем сообщение в базу", 'tg');
@@ -205,7 +205,7 @@ Email: ".$newManager->email."
         $msg = "Новый клиент: " . $this->clientFirstName;
         $this->telegram->sendMessage([
             'chat_id' => $newManagerUser->tg_id,
-            'text' => $msg
+            'text' => str_replace('&nbsp;', '', $msg)
         ]);
 
         Yii::info("Записываем сообщение в базу", 'tg');
@@ -295,7 +295,7 @@ Email: ".$newManager->email."
 
                 $this->telegram->sendMessage([
                     'chat_id' => $this->chat_id,
-                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента: " . print_r($result, true) ." Сообщение: " .$this->command
+                    'text' => "Не удалось найти сообщение для ответа. Не найден тег клиента: " . print_r($result, true) ." Сообщение: " . $this->command
                 ]);
                 exit();
             }
@@ -303,7 +303,7 @@ Email: ".$newManager->email."
             Yii::info("Отправляем сообщение клиенту", 'tg');
             $this->telegram->sendMessage([
                 'chat_id' => (int)$result,
-                'text' => $this->command
+                'text' => str_replace('&nbsp;', '', $this->command)
             ]);
             Yii::info("Сохраняем сообщение в базу", 'tg');
             $localMsg = new ChatMessage();
@@ -356,7 +356,7 @@ Email: ".$newManager->email."
             Yii::info("Пересылаем сообщение менеджеру", 'tg');
             $this->telegram->sendMessage([
                 'chat_id' => $issetManager->manager->tg_id,
-                'text' => $this->command. "\nКлиент: #$this->chat_id#"
+                'text' => str_replace('&nbsp;', '', $this->command). "\nКлиент: #$this->chat_id#"
             ]);
         }
 
