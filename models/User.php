@@ -140,6 +140,15 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return ArrayHelper::map(User::find()->orderBy('username')->all(), 'id', 'username');
     }
+    public static function getListByRole($role): array
+    {
+        $query = User::find()
+            ->joinWith('role')
+            ->where(['auth_assignment.item_name' => $role])
+            ->orderBy('username')
+            ->all();
+        return ArrayHelper::map($query, 'id', 'username');
+    }
 
     public static function getUsernameById($id){
         $user = User::findOne(['id' => $id]);

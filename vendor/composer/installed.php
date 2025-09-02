@@ -3,7 +3,7 @@
         'name' => 'yiisoft/yii2-app-basic',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '523bd34df690d5659483c27f1743a96a05c735fb',
+        'reference' => '884007b8dc72aeb3b0f0f5e7877295fc9b65a412',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -239,6 +239,17 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'kartik-v/yii2-date-range' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '99f37fa14b8e7c99ca538377191c12502002f5d2',
+            'type' => 'yii2-extension',
+            'install_path' => __DIR__ . '/../kartik-v/yii2-date-range',
+            'aliases' => array(
+                0 => '1.7.x-dev',
+            ),
             'dev_requirement' => false,
         ),
         'kartik-v/yii2-krajee-base' => array(
@@ -802,7 +813,7 @@
         'yiisoft/yii2-app-basic' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '523bd34df690d5659483c27f1743a96a05c735fb',
+            'reference' => '884007b8dc72aeb3b0f0f5e7877295fc9b65a412',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

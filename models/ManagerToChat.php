@@ -91,5 +91,9 @@ class ManagerToChat extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ChatMessage::className(), ['chat_id' => 'chat_id'])->orderBy(['date_add' => SORT_DESC]);
     }
+    public function getFirstTwoMessages()
+    {
+        return $this->hasMany(ChatMessage::className(), ['chat_id' => 'chat_id'])->orderBy(['date_add' => SORT_ASC])->limit(2);
+    }
 
 }
