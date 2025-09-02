@@ -87,7 +87,7 @@ class StatController extends AccessController
 
             $d->full_activity = 0;
             foreach ($currentActivity as $c) {
-                echo "$c->end_date $c->start_date: " . ($c->end_date - $c->start_date). "<br>";
+                //echo "$c->end_date $c->start_date: " . ($c->end_date - $c->start_date). "<br>";
                 $d->full_activity += $c->end_date - $c->start_date;
             }
 
