@@ -176,7 +176,7 @@ class StatController extends AccessController
             return "$seconds сек.";
         } elseif ($seconds < 3600) { // меньше часа
             $minutes = floor($seconds / 60);
-            $remaining_seconds = intval($seconds % 60);
+            $remaining_seconds = intval((int)$seconds % 60);
 
             if ($remaining_seconds === 0) {
                 return "$minutes мин.";
