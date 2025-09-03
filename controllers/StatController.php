@@ -114,7 +114,8 @@ class StatController extends AccessController
             //Среднее время ответа на первое сообщение
             $mtc = ManagerToChat::find()
                 ->where(['manager_id' => $km])
-                ->joinWith('firstTwoMessages')
+                ->joinWith('firstMessages')
+                ->joinWith('firstResponse')
                 ->andWhere(['>=', 'date_add', $datesCurrent['start']])
                 ->andWhere(['<=', 'date_add', $datesCurrent['end']])
                 ->all();
@@ -122,7 +123,7 @@ class StatController extends AccessController
             $answerTime = [];
             foreach ($mtc as $m) {
 
-                $answerTime[] = isset($m->firstTwoMessages[1]) ? ($m->firstTwoMessages[1]->date_add - $m->firstTwoMessages[0]->date_add) : null;
+                $answerTime[] = isset($m->firstResponse) ? ($m->firstResponse->date_add - $m->firstMessages->date_add) : null;
             }
             echo "answerTime <pre>".print_r($answerTime). "</pre>";
             $d->all_answer_time = $answerTime;
@@ -134,7 +135,8 @@ class StatController extends AccessController
 
             $previousMtc = ManagerToChat::find()
                 ->where(['manager_id' => $km])
-                ->joinWith('firstTwoMessages')
+                ->joinWith('firstMessages')
+                ->joinWith('firstResponse')
                 ->andWhere(['>=', 'date_add', $datesPrevious['start']])
                 ->andWhere(['<=', 'date_add', $datesPrevious['end']])
                 ->all();
@@ -142,7 +144,7 @@ class StatController extends AccessController
             $answerTime = [];
             foreach ($previousMtc as $m) {
 
-                $answerTime[] = isset($m->firstTwoMessages[1]) ? ($m->firstTwoMessages[1]->date_add - $m->firstTwoMessages[0]->date_add) : null;
+                $answerTime[] = isset($m->firstResponse) ? ($m->firstResponse->date_add - $m->firstMessages->date_add) : null;
             }
             $d->previous_all_answer_time = $answerTime;
 
