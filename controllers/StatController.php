@@ -113,7 +113,7 @@ class StatController extends AccessController
 
             //Среднее время ответа на первое сообщение
             $mtc = ManagerToChat::find()
-                ->where(['manager_id' => $km])
+                ->where(['manager_id1' => $km])
                 ->joinWith('firstMessages')
                 ->joinWith('firstResponse')
                 ->andWhere(['>=', 'date_add', $datesCurrent['start']])
