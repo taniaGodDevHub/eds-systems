@@ -119,7 +119,7 @@ class StatController extends AccessController
                 ->andWhere(['>=', 'date_add', $datesCurrent['start']])
                 ->andWhere(['<=', 'date_add', $datesCurrent['end']])
                 ->all();
-
+            echo "mtc <pre>".print_r($mtc). "</pre>";
             $answerTime = [];
             foreach ($mtc as $m) {
 
