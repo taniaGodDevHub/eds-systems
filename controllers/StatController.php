@@ -87,7 +87,7 @@ class StatController extends AccessController
 
             $d->full_activity = 0;
             foreach ($currentActivity as $c) {
-                //echo "$c->end_date $c->start_date: " . ($c->end_date - $c->start_date). "<br>";
+                echo "$c->end_date $c->start_date: " . ($c->end_date - $c->start_date). "<br>";
                 $d->full_activity += $c->end_date - $c->start_date;
             }
 
@@ -98,6 +98,7 @@ class StatController extends AccessController
 
             $d->previous_full_activity = 0;
             foreach ($previousActivity as $c) {
+                //echo "end_date $c->end_date - start_date $c->start_date";
                 $d->previous_full_activity += $c->end_date - $c->start_date;
             }
 
@@ -123,6 +124,7 @@ class StatController extends AccessController
 
                 $answerTime[] = isset($m->firstTwoMessages[1]) ? ($m->firstTwoMessages[1]->date_add - $m->firstTwoMessages[0]->date_add) : null;
             }
+            echo "answerTime <pre>".print_r($answerTime). "</pre>";
             $d->all_answer_time = $answerTime;
             if(count($d->all_answer_time)) {
                 $d->average_answer_time = $this->formatSeconds(array_sum($d->all_answer_time) / count($d->all_answer_time));

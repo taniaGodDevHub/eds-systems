@@ -53,7 +53,7 @@ echo "</pre>";*/
                             <td><?= $sm->manager ?></td>
                             <td><?= $sm->count_msg ?></td>
                             <td><?= $sm->average_answer_time_all?></td>
-                            <td><?= $sm->previous_full_activity_text ?></td>
+                            <td><?= $sm->average_answer_time ?></td>
                             <td><?= $sm->full_activity_text ?>(<?= $sm->full_activity_percent ?>%)</td>
                             <td><?= $sm->full_activity_dynamic == 'up' ? '<i class="bi bi-arrow-up-short" style="color: green;"></i>' : '<i class="bi bi-arrow-down-short" style="color: red;"></i>' ?><?= $sm->full_activity_dynamic_percent ?>
                                 %
