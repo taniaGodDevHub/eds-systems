@@ -176,7 +176,7 @@ class StatController extends AccessController
             return "$seconds сек.";
         } elseif ($seconds < 3600) { // меньше часа
             $minutes = floor($seconds / 60);
-            $remaining_seconds = $seconds % 60;
+            $remaining_seconds = intval($seconds % 60);
 
             if ($remaining_seconds === 0) {
                 return "$minutes мин.";
@@ -185,7 +185,7 @@ class StatController extends AccessController
             }
         } elseif ($seconds < 86400) { // меньше суток
             $hours = floor($seconds / 3600);
-            $remaining_minutes = floor(($seconds % 3600) / 60);
+            $remaining_minutes = intval(floor(($seconds % 3600) / 60));
             $remaining_seconds = $seconds % 60;
 
             if ($remaining_minutes === 0 && $remaining_seconds === 0) {
