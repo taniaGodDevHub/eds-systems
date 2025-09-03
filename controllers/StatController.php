@@ -151,7 +151,7 @@ class StatController extends AccessController
                 $d->average_answer_time = false;
             }
 
-            $d->average_answer_time_all = $this->calculateAverageResponseTime($km, $datesCurrent['start'], $datesCurrent['end']);
+            $d->average_answer_time_all = $this->formatSeconds($this->calculateAverageResponseTime($km, $datesCurrent['start'], $datesCurrent['end']));
 
             $s[$km] = $d;
         }
@@ -186,15 +186,15 @@ class StatController extends AccessController
         } elseif ($seconds < 86400) { // меньше суток
             $hours = floor($seconds / 3600);
             $remaining_minutes_ost = floor((int)$seconds % 3600);
-            $remaining_minutes = $remaining_minutes_ost / 60;
+            $remaining_minutes = (int)$remaining_minutes_ost / 60;
             $remaining_seconds = (int)$seconds % 60;
 
             if ($remaining_minutes === 0 && $remaining_seconds === 0) {
                 return "$hours ч.";
             } elseif ($remaining_seconds === 0) {
-                return "$hours ч. $remaining_minutes мин.";
+                return "$hours ч. ". (int)$remaining_minutes." мин.";
             } else {
-                return "$hours ч. $remaining_minutes мин.";
+                return "$hours ч. ". (int)$remaining_minutes." мин.";
             }
         } else {
             return "Больше суток";
@@ -274,12 +274,7 @@ class StatController extends AccessController
                     ->one();
 
 
-                    $answerTime[] = [
-                        'start' => $clMsg->date_add,
-                        'start_id' => $clMsg->id,
-                        'end' => !empty($respMsg) ? $respMsg->date_add : 'null',
-                        'diff' => !empty($respMsg) ? $respMsg->date_add - $clMsg->date_add : null,
-                    ];
+                    $answerTime[] = (!empty($respMsg) ? $respMsg->date_add : time()) - $clMsg->date_add;
 
 
 
@@ -289,8 +284,15 @@ class StatController extends AccessController
                 ->andWhere(['>', 'id', $current_id])
                 ->orderBy(['date_add' => SORT_ASC])
                 ->one()));
-            echo "<pre> answerTime".print_r($answerTime, true)."</pre>";
-            die;
+
+            if(count($answerTime)) {
+
+                $result = array_sum($answerTime) / count($answerTime);
+            }else{
+                $result = 0;
+            }
+
+            return (int)$result;
         }
     }
 }
