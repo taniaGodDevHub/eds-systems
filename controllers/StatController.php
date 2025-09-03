@@ -113,19 +113,37 @@ class StatController extends AccessController
 
             //Среднее время ответа на первое сообщение
             $mtc = ManagerToChat::find()
-                ->where(['manager_id1' => $km])
+                ->where(['manager_id' => $km])
                 ->joinWith('firstMessages')
-                ->joinWith('firstResponse')
                 ->andWhere(['>=', 'date_add', $datesCurrent['start']])
                 ->andWhere(['<=', 'date_add', $datesCurrent['end']])
+                ->asArray()
                 ->all();
-            echo "mtc <pre>".print_r($mtc). "</pre>";
+
+
+            foreach ($mtc as &$m) {
+                $m['firstMessages'] = ChatMessage::find()
+                    ->where(['chat_id' => $m['chat_id']])
+                    ->andWhere(['author_id' => null])
+                    ->orderBy(['date_add' => SORT_ASC])
+                    ->asArray()
+                    ->one();
+                $m['firstResponse'] = ChatMessage::find()
+                    ->where(['chat_id' => $m['chat_id']])
+                    ->andWhere(['not', ['author_id' => null]])
+                    ->orderBy(['date_add' => SORT_ASC])
+                    ->asArray()
+                    ->offset(1)
+                    ->one();
+            }
+
+            echo "mtc <pre>".print_r($mtc, true). "</pre>";
             $answerTime = [];
             foreach ($mtc as $m) {
 
-                $answerTime[] = isset($m->firstResponse) ? ($m->firstResponse->date_add - $m->firstMessages->date_add) : null;
+                $answerTime[] = isset($m['firstResponse']) ? ($m['firstResponse']['date_add'] - $m['firstMessages']['date_add']) : null;
             }
-            echo "answerTime <pre>".print_r($answerTime). "</pre>";
+            //echo "answerTime <pre>".print_r($answerTime). "</pre>";
             $d->all_answer_time = $answerTime;
             if(count($d->all_answer_time)) {
                 $d->average_answer_time = $this->formatSeconds(array_sum($d->all_answer_time) / count($d->all_answer_time));
@@ -133,28 +151,7 @@ class StatController extends AccessController
                 $d->average_answer_time = false;
             }
 
-            $previousMtc = ManagerToChat::find()
-                ->where(['manager_id' => $km])
-                ->joinWith('firstMessages')
-                ->joinWith('firstResponse')
-                ->andWhere(['>=', 'date_add', $datesPrevious['start']])
-                ->andWhere(['<=', 'date_add', $datesPrevious['end']])
-                ->all();
-
-            $answerTime = [];
-            foreach ($previousMtc as $m) {
-
-                $answerTime[] = isset($m->firstResponse) ? ($m->firstResponse->date_add - $m->firstMessages->date_add) : null;
-            }
-            $d->previous_all_answer_time = $answerTime;
-
-            if(count($d->previous_all_answer_time)) {
-                $d->previous_average_answer_time = $this->formatSeconds(array_sum($d->previous_all_answer_time) / count($d->previous_all_answer_time));
-            } else {
-                $d->previous_average_answer_time = false;
-            }
-
-            $d->average_answer_time_all = ChatMessage::calculateAverageResponseTime([$km], $datesCurrent['start'], $datesCurrent['end']);
+            $d->average_answer_time_all = $this->calculateAverageResponseTime($km, $datesCurrent['start'], $datesCurrent['end']);
 
             $s[$km] = $d;
         }
@@ -235,5 +232,64 @@ class StatController extends AccessController
         }
 
         return $result;
+    }
+
+    /**
+     * Расчет среднего времени ответа менеджера
+     * @param integer $managerId - Массив ID менеджеров
+     * @param integer $periodStart - Начальное время периода (timestamp)
+     * @param integer $periodEnd - Конечное время периода (timestamp)
+     * @return float|null - Среднее время ответа в секундах или null, если данных недостаточно
+     */
+    private function calculateAverageResponseTime($managerId, $start, $end)
+    {
+        $mtc = ManagerToChat::find()
+            ->where(['manager_id' => $managerId])
+            ->joinWith('firstMessages')
+            ->andWhere(['>=', 'date_add', $start])
+            ->andWhere(['<=', 'date_add', $end])
+            ->asArray()
+            ->all();
+
+        $answerTime = [];
+
+
+        foreach ($mtc as &$m) {
+            $current_id = 0;
+            $clMsg = ChatMessage::find()
+                ->where(['chat_id' => $m['chat_id']])
+                ->andWhere(['author_id' => null])
+                ->andWhere(['>', 'id', $current_id])
+                ->orderBy(['date_add' => SORT_ASC])
+                ->one();
+            do{
+                $current_id = $clMsg->id;
+
+                $respMsg = ChatMessage::find()
+                    ->where(['chat_id' => $m['chat_id']])
+                    ->andWhere(['not',['author_id' => null]])
+                    ->andWhere(['>', 'id', $current_id])
+                    ->orderBy(['date_add' => SORT_ASC])
+                    ->one();
+
+
+                    $answerTime[] = [
+                        'start' => $clMsg->date_add,
+                        'start_id' => $clMsg->id,
+                        'end' => !empty($respMsg) ? $respMsg->date_add : 'null',
+                        'diff' => !empty($respMsg) ? $respMsg->date_add - $clMsg->date_add : null,
+                    ];
+
+
+
+            }while(!empty($clMsg = ChatMessage::find()
+                ->where(['chat_id' => $m['chat_id']])
+                ->andWhere(['author_id' => null])
+                ->andWhere(['>', 'id', $current_id])
+                ->orderBy(['date_add' => SORT_ASC])
+                ->one()));
+            echo "<pre> answerTime".print_r($answerTime, true)."</pre>";
+            die;
+        }
     }
 }
